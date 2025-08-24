@@ -1,15 +1,22 @@
-
 body.dashboard {
     margin: 0;
     padding: 0;
-    background: linear-gradient(to right, #97abfb, #3f0393);
+    background: linear-gradient(to right, #899ff8, #3f0393);
 }
 
-.pc{
+.pc {
     display: flex;
 }
-.mobile{
+
+.mobile {
     display: none;
+}
+
+a:hover,
+a1:hover {
+    transform: scale(1.08);
+    transition: transform 0.2s ease-in-out;
+    /* box-shadow: 0 4px 8px rgba(0, 0, 0, 0.306) */
 }
 
 .side-bar {
@@ -18,11 +25,15 @@ body.dashboard {
     border-radius: 40px;
     margin-left: 12px;
     width: 5.5%;
-    height: 90vh;
+    height: 95vh;
     background-color: #000;
     box-shadow: 5px 0 10px rgba(0, 0, 0, 0.9);
     z-index: 1000;
-    margin-top: 34px;
+    margin-top: 18px;
+}
+
+.side-bar nav:first-child {
+    margin-top: 0px
 }
 
 .side-bar-mobile {
@@ -43,7 +54,7 @@ body.dashboard {
 
 .indicator-mobile {
     display: none;
-    width:max-content;
+    width: max-content;
     justify-content: center;
     padding-right: 5%;
     align-items: center;
@@ -57,10 +68,11 @@ body.dashboard {
 
 /* Media query */
 @media (max-width: 768px) {
-    .pc{
+    .pc {
         display: none;
     }
-    .mobile{
+
+    .mobile {
         display: block;
     }
 
@@ -96,13 +108,13 @@ body.dashboard {
     }
 
     hr {
-        margin-top: 70px;
-        width: 95%;
+        margin-top: 60px;
+        width: 99%;
         margin-bottom: 10px;
     }
 
-    .indicator {
-        width: 210px;
+    .indicator-dashboard {
+        width: 215px;
         transition: width 0.3s ease;
     }
 }
@@ -110,7 +122,7 @@ body.dashboard {
 .logo {
     display: flex;
     margin-top: 20px;
-    margin-bottom: 80px;
+    margin-bottom: 70px;
     border-radius: 50px;
     margin-left: 10px;
     width: 100%;
@@ -138,9 +150,9 @@ p1 {
     position: fixed;
     width: 55px;
     height: 55px;
-    left: 22px;
-    top: 185px;
-    background: rgba(255, 255, 255, 0.08);
+    left: 23px;
+    top: 160px;
+    background: rgba(255, 255, 255, 0.133);
     border-radius: 15px;
     z-index: 500;
 }
@@ -186,8 +198,9 @@ p2 {
 }
 
 hr {
-    margin-top: 70px;
-    width: 85%;
+    margin-top: 60px;
+    width: 98%;
+    margin-left: 8px;
     margin-bottom: 10px;
 }
 
@@ -198,7 +211,7 @@ hr {
     margin-top: 20px;
 }
 
-.main-mobile{
+.main-mobile {
     display: none;
 }
 
@@ -220,6 +233,8 @@ img {
     width: 72%;
     position: relative;
     margin-top: 5px;
+    margin-left: 10px;
+    margin-bottom: 50px;
 }
 
 .banner-img {
@@ -490,6 +505,71 @@ body::-webkit-scrollbar {
     transition: background-color 0.3s ease;
 }
 
+.filter-main {
+    display: flex;
+    margin-left: 15px;
+    height: 100px;
+    gap: 20px;
+}
+
+.filter:hover {
+    transform: scale(1.05);
+    transition: transform 0.2s ease-in-out;
+    background-color: #8693c850;
+    transition: background-color 0.3s ease;
+}
+
+.filter:first-child {
+    width: 110px;
+    height: 35px;
+    border-radius: 10px;
+    border: 1px solid #404040;
+    align-content: center;
+    box-shadow: 0 2px 2px rgba(0, 0, 0, 0.306);
+    cursor: pointer;
+}
+
+.filter:nth-child(2) {
+    width: 65px;
+    height: 35px;
+    border-radius: 10px;
+    border: 1px solid #404040;
+    align-content: center;
+    box-shadow: 0 2px 2px rgba(0, 0, 0, 0.306);
+    cursor: pointer;
+}
+
+.filter:nth-child(3) {
+    width: 107px;
+    height: 35px;
+    border-radius: 10px;
+    border: 1px solid #404040;
+    align-content: center;
+    box-shadow: 0 2px 2px rgba(0, 0, 0, 0.306);
+    cursor: pointer;
+}
+
+.filter:nth-child(4) {
+    width: 113px;
+    height: 35px;
+    border-radius: 10px;
+    border: 1px solid #404040;
+    align-content: center;
+    box-shadow: 0 2px 2px rgba(0, 0, 0, 0.306);
+    cursor: pointer;
+}
+
+
+.filter:nth-child(5) {
+    width: 170px;
+    height: 35px;
+    border-radius: 10px;
+    border: 1px solid #404040;
+    align-content: center;
+    box-shadow: 0 2px 2px rgba(0, 0, 0, 0.306);
+    cursor: pointer;
+}
+
 
 
 
@@ -508,8 +588,8 @@ body.cart-page {
     width: 55px;
     height: 55px;
     left: 10px;
-    top: 331px;
-    background: rgba(244, 244, 244, 0.113);
+    top: 322px;
+    background: rgba(255, 255, 255, 0.133);
     border-radius: 15px;
     z-index: 500;
 }
@@ -685,11 +765,12 @@ body.account-page {
     width: 55px;
     height: 55px;
     left: 10px;
-    top: 391px;
-    background: rgba(244, 244, 244, 0.113);
+    top: 381px;
+    background: rgba(255, 255, 255, 0.133);
     border-radius: 15px;
     z-index: 500;
 }
+
 
 .side-bar-account {
     position: fixed;
@@ -718,7 +799,7 @@ body.account-page {
     }
 
     hr.account {
-        margin-top: 120px;
+        margin-top: 80px;
         width: 95%;
         margin-bottom: 10px;
     }
@@ -730,7 +811,7 @@ body.account-page {
 }
 
 hr.account {
-    margin-top: 120px;
+    margin-top: 80px;
     width: 85%;
     margin-bottom: 10px;
 }
@@ -827,8 +908,8 @@ body.category-page {
     width: 55px;
     height: 55px;
     left: 10px;
-    top: 211px;
-    background: rgba(244, 244, 244, 0.113);
+    top: 201px;
+    background: rgba(255, 255, 255, 0.133);
     border-radius: 15px;
     z-index: 500;
 }
@@ -878,11 +959,53 @@ hr.category {
 }
 
 .main-category {
-    width: 94%;
+    width: 95%;
     display: flex;
     height: 100vh;
     margin-left: 80px;
     background-color: #f1f1f1;
+    background: linear-gradient(to bottom right,
+            /*#fcae40*/
+            #f4ee80, #f6f3c5, #fff, #c2eefd, #87d9f5
+            /*#3ab4dd*/
+        );
     border-bottom-left-radius: 30px;
     border-top-left-radius: 30px;
+}
+
+.left {
+    width: 50%;
+    margin-top: 160px;
+}
+
+p8 {
+    color: rgb(52, 91, 232);
+    margin-left: 10px;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    font-size: 110px;
+    font-weight: 600;
+    position: fixed;
+    right: 420px;
+    top: 200px;
+}
+
+.order-now-redirect{
+    position: fixed;
+    top: 520px;
+    height: 40px;
+    color: white;
+    background-color: rgb(223, 131, 17);
+    font-size: 16px;
+    font-family: Poppins;
+    width: 120px;
+    border: none;
+    left: 230px;
+    border-radius: 20px;
+    cursor: pointer;
+}
+
+.order-now-redirect:hover{
+    transform: scale(1.08);
+    transition: transform 0.2s ease-in-out;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.9);
 }
