@@ -975,7 +975,7 @@ hr.category {
 
 .left {
     width: 50%;
-    margin-top: 160px;
+    margin-top: 150px;
 }
 
 p8 {
@@ -985,8 +985,8 @@ p8 {
     font-size: 110px;
     font-weight: 600;
     position: fixed;
-    right: 400px;
-    top: 200px;
+    right: 370px;
+    top: 180px;
 }
 
 .order-now-redirect{
@@ -1065,5 +1065,3 @@ p8 {
   60%  { transform: translateX(-200px) rotate(-180deg); }
   100% { transform: translateX(350px) rotate(180deg); }
 } */
-
-
