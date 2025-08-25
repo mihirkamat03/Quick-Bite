@@ -985,7 +985,7 @@ p8 {
     font-size: 110px;
     font-weight: 600;
     position: fixed;
-    right: 440px;
+    right: 400px;
     top: 200px;
 }
 
@@ -1065,4 +1065,5 @@ p8 {
   60%  { transform: translateX(-200px) rotate(-180deg); }
   100% { transform: translateX(350px) rotate(180deg); }
 } */
+
 
