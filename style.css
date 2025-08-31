@@ -1269,9 +1269,10 @@ p8 {
 }
 
 .logout{
+    display: flex;
     align-items: center;
-    margin-top: 22px;
-    margin-left: 400px;
+    /* margin-top: 22px; */
+    margin-left: 350px;
 }
 
 .notification{
