@@ -22,7 +22,19 @@
 </head>
 
 <body class="ls-page">
-    
+    <div class="overlay">
+        <div class="loading-card">
+            <div class="loader"></div>
+            <img class="success" width="25%" style="display: none; margin-left: 35%;"
+                src="https://media.istockphoto.com/id/496603666/vector/flat-icon-check.jpg?s=612x612&w=0&k=20&c=BMYf-7moOtevP8t46IjHHbxJ4x4I0ZoFReIp9ApXBqU="
+                alt="">
+            <p class="loader-top" style="margin-left: 12%; font-size: 19px; font-family: Poppins;">Creating a new
+                account</p>
+            <span class="loader-desc"
+                style="display: block; margin-left: 32%; margin-top: 5%; font-family: Poppins;">Please wait...</span>
+        </div>
+    </div>
+
     <div class="outer-part">
         <div class="scr1">
             <div class="login-part">
@@ -39,8 +51,8 @@
                     style="cursor: pointer; margin-bottom: 20px; margin-left: 5px; border: 2px solid rgb(145, 144, 144);box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.4);  padding: 5px; border-radius: 25px;"
                     src="https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/x-social-media-black-icon.png"
                     alt="">
-                <input class="email" type="email" placeholder="Email">
-                <input class="password" type="password" placeholder="Password">
+                <input class="email-l" type="email" placeholder="Email">
+                <input class="password-l" type="password" placeholder="Password">
                 <a href="#" class="forgot-password">Forgot Password</a>
                 <button class="login-scr1" type="submit">Login</button>
             </div>
@@ -95,6 +107,58 @@
         </div>
 
     </div>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
+    <!-- FOR SIGNUP, TO STORE IN DB -->
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyD-meHFhL3uq4wNJDL7fa5GsykIgx7BDoE",
+            authDomain: "quick-bite-897b1.firebaseapp.com",
+            databaseURL: "https://quick-bite-897b1-default-rtdb.firebaseio.com",
+            projectId: "quick-bite-897b1",
+            storageBucket: "quick-bite-897b1.firebasestorage.app",
+            messagingSenderId: "774517134479",
+            appId: "1:774517134479:web:c474786e46bd8ca38b4cfa",
+            measurementId: "G-1041GMYLQX"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+        document.querySelector(".signup-btn-scr2").addEventListener("click", function (e) {
+            e.preventDefault();
+
+            const username = document.querySelector(".u-name").value;
+            const email = document.querySelector(".email").value;
+            const password = document.querySelector(".password").value;
+            const loader = document.querySelector(".overlay");
+
+            db.ref("Users").child(username).set({
+
+                username: username,
+                email: email,
+                password: password
+            }).then(() => {
+                loader.style.display = "block";
+                console.log(email, password);
+                setTimeout(() => {
+                    document.querySelector(".loader-top").innerText = "Success!!";
+                    document.querySelector(".loader-top").marginLeft = "35%";
+                    document.querySelector(".loader-desc").innerText = "Your account was successfully created";
+                    document.querySelector(".loader-desc").marginTop = "0";
+                    document.querySelector(".loader").style.display = "none";
+                    document.querySelector(".success").style.display="block"
+                    setTimeout(() => {
+                        window.location.href = "index.html";
+                        loader.style.display="none";
+                    },1000);
+                }, 3000);
+            }).catch((err) => {
+                console.error(err);
+            });
+        });
+
+    </script>
 
 </body>
 
