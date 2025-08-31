@@ -123,7 +123,8 @@
             const phone = document.getElementById("phone").value;
             const query = document.getElementById("query").value;
 
-            db.ref("queries").push({
+            if(email!="" && phone!="" && query!="" && phone.length()==10){
+                db.ref("queries").push({
                 email: email,
                 phone: phone,
                 query: query
@@ -132,6 +133,11 @@
             }).catch((err) => {
                 console.error(err);
             });
+            }
+            else{
+                alert("Fill all details");
+            }
+            
         });</script>
 </body>
 
