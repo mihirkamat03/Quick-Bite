@@ -47,7 +47,7 @@ btn.addEventListener('mouseenter', () => {
 // });
 
 document.querySelector(".order-now-redirect").addEventListener("click", () => {
-  let text = document.querySelector("text2","text1","text3");
+  let text = document.querySelector("text2", "text1", "text3");
   text.classList.remove("animate"); // reset
   void text.offsetWidth; // force reflow (so animation replays)
   text.classList.add("animate");
@@ -57,51 +57,54 @@ document.querySelector(".order-now-redirect").addEventListener("click", () => {
 const x = document.getElementById("filter");
 
 x.addEventListener("click", () => {
-    if (x.style.backgroundColor === "white") {
-        x.style.backgroundColor = "red";
-    } else {
-        x.style.backgroundColor = "white";
-    }
+  if (x.style.backgroundColor === "white") {
+    x.style.backgroundColor = "red";
+  } else {
+    x.style.backgroundColor = "white";
+  }
 });
 
 
 x.addEventListener("click", () => {
-    x.classList.toggle("active");
+  x.classList.toggle("active");
 });
 
 
 
 
 const firebaseConfig = {
-            apiKey: "AIzaSyD-meHFhL3uq4wNJDL7fa5GsykIgx7BDoE",
-            authDomain: "quick-bite-897b1.firebaseapp.com",
-            databaseURL: "https://quick-bite-897b1-default-rtdb.firebaseio.com",
-            projectId: "quick-bite-897b1",
-            storageBucket: "quick-bite-897b1.firebasestorage.app",
-            messagingSenderId: "774517134479",
-            appId: "1:774517134479:web:c474786e46bd8ca38b4cfa",
-            measurementId: "G-1041GMYLQX"
-        };
+  apiKey: "AIzaSyD-meHFhL3uq4wNJDL7fa5GsykIgx7BDoE",
+  authDomain: "quick-bite-897b1.firebaseapp.com",
+  databaseURL: "https://quick-bite-897b1-default-rtdb.firebaseio.com",
+  projectId: "quick-bite-897b1",
+  storageBucket: "quick-bite-897b1.firebasestorage.app",
+  messagingSenderId: "774517134479",
+  appId: "1:774517134479:web:c474786e46bd8ca38b4cfa",
+  measurementId: "G-1041GMYLQX"
+};
 
-        // Initialize Firebase
-        firebase.initializeApp(firebaseConfig);
-        const db = firebase.database();
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
 
-        // Form submit
-        document.querySelector(".talk").addEventListener("click", function (e) {
-            e.preventDefault();
+// Form submit
+document.querySelector(".talk").addEventListener("click", function (e) {
+  e.preventDefault();
 
-            const email = document.getElementById("email").value;
-            const phone = document.getElementById("phone").value;
-            const query = document.getElementById("query").value;
+  const email = document.getElementById("email").value;
+  const phone = document.getElementById("phone").value;
+  const query = document.getElementById("query").value;
 
-            db.ref("queries").phone({
-                email: email,
-                phone: phone,
-                query: query
-            }).then(() => {
-                alert("Submitted!");
-            }).catch((err) => {
-                console.error(err);
-            });
-        });
+  db.ref("queries").phone({
+    email: email,
+    phone: phone,
+    query: query
+  }).then(() => {
+    alert("Submitted!");
+  }).catch((err) => {
+    console.error(err);
+  });
+});
+
+
+
