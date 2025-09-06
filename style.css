@@ -812,11 +812,14 @@ hr.cart {
 }
 
 .order-info {
-    width: 830px;
-    height: 90px;
+    position: absolute;
+    align-items: center;
+    width: 150px;
+    height: 80px;
     border-radius: 8px;
-    margin-left: 50px;
-    margin-top: 30px;
+    padding-top: 5px;
+    right: 50px;
+    margin-top: 10px;
     background-color: #f1f1f1;
 }
 
@@ -894,8 +897,11 @@ hr.cart {
 }
 
 .submit {
+    position: absolute;
     width: 200px;
     height: 50px;
+    bottom: 60px;
+    
     color: #fff;
     font-size: 18px;
     font-family: Poppins;
@@ -903,7 +909,7 @@ hr.cart {
     border-radius: 20px;
     margin-left: 650px;
     border: 0.1px solid #8d8b8b;
-    margin-top: 40px;
+    /* margin-top: 40px; */
     cursor: pointer;
 }
 
