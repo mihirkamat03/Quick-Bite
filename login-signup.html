@@ -4,6 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#fff">
+    <meta name="apple-mobile-web-app-status-bar-style" content="white">
     <title>Login - Quick Bite</title>
     <link rel="stylesheet" href="style-ls.css">
     <link rel="icon" href="logo.png" type="image/x-icon" />
@@ -35,80 +37,135 @@
         </div>
     </div>
 
-    <div class="outer-part">
-        <div class="scr1">
-            <div class="login-part">
-                <h1
-                    style="font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif; margin-left: 100px; color: #050f53;;">
-                    Login to Quick Bite</h1>
-                <img width="40"
-                    style="cursor: pointer; margin-bottom: 20px; margin-left: 140px; border: 2px solid rgb(144, 144, 145);box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.4);  border-radius: 25px;"
-                    src="google.png" alt="">
-                <img width="30"
-                    style="cursor: pointer; margin-bottom: 20px; padding: 5px; margin-left: 5px; border: 2px solid rgb(145, 144, 144);box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.4);  border-radius: 25px;"
-                    src="https://www.freeiconspng.com/uploads/discord-black-icon-1.png" alt="">
-                <img width="29"
-                    style="cursor: pointer; margin-bottom: 20px; margin-left: 5px; border: 2px solid rgb(145, 144, 144);box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.4);  padding: 5px; border-radius: 25px;"
-                    src="https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/x-social-media-black-icon.png"
-                    alt="">
-                <input class="email-l" type="email" placeholder="Email">
-                <input class="password-l" type="password" placeholder="Password">
-                <a href="#" class="forgot-password">Forgot Password</a>
-                <button class="login-scr1" type="submit">Login</button>
+    <div class="pc">
+        <div class="outer-part">
+            <div class="scr1">
+                <div class="login-part">
+                    <h1 class="login-top-mob"
+                        style="font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif; margin-left: 10%; color: #050f53;;">
+                        Login to Quick Bite</h1>
+                    <img width="40"
+                        style="cursor: pointer; margin-bottom: 20px; margin-left: 140px; border: 2px solid rgb(144, 144, 145);box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.4);  border-radius: 25px;"
+                        src="google.png" alt="">
+                    <img width="30"
+                        style="cursor: pointer; margin-bottom: 20px; padding: 5px; margin-left: 5px; border: 2px solid rgb(145, 144, 144);box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.4);  border-radius: 25px;"
+                        src="https://www.freeiconspng.com/uploads/discord-black-icon-1.png" alt="">
+                    <img width="29"
+                        style="cursor: pointer; margin-bottom: 20px; margin-left: 5px; border: 2px solid rgb(145, 144, 144);box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.4);  padding: 5px; border-radius: 25px;"
+                        src="https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/x-social-media-black-icon.png"
+                        alt="">
+                    <input class="email-l" type="email" placeholder="Email">
+                    <input class="password-l" type="password" placeholder="Password">
+                    <a href="#" class="forgot-password">Forgot Password</a>
+                    <button class="login-scr1" type="submit">Login</button>
+                </div>
+                <div class="side-menu-login">
+                    <img width="120" style="margin-left: 140px; margin-top: 20px; border-radius: 50%;" src="logo.png">
+                    <h1
+                        style="font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif; margin-left: 60px; font-size: 28px; line-height: 0.1; margin-top: 50px; color: #fff;;">
+                        Welcome back User</h1>
+                    <p
+                        style="margin-left: 60px; font-family: Poppins; font-size: 17px; color: rgb(194, 193, 193); line-height: 1.2;">
+                        Glad to see you again</p>
+                    <p style="margin-left: 60px; font-family: Poppins; font-size: 16px; color: rgb(194, 193, 193);">
+                        Don't
+                        have an account? Signup</p>
+                    <button onclick="slide_to_signup()" class="signup-btn-side-menu" type="submit">Sign Up</button>
+                </div>
             </div>
-            <div class="side-menu-login">
-                <img width="120" style="margin-left: 140px; margin-top: 20px; border-radius: 50%;" src="logo.png">
-                <h1
-                    style="font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif; margin-left: 60px; font-size: 28px; line-height: 0.1; margin-top: 50px; color: #fff;;">
-                    Welcome back User</h1>
-                <p
-                    style="margin-left: 60px; font-family: Poppins; font-size: 17px; color: rgb(194, 193, 193); line-height: 1.2;">
-                    Glad to see you again</p>
-                <p style="margin-left: 60px; font-family: Poppins; font-size: 16px; color: rgb(194, 193, 193);">Don't
-                    have an account? Signup</p>
-                <button class="signup-btn-side-menu" type="submit">Sign Up</button>
+
+            <div class="scr2">
+                <div class="side-menu-signup">
+                    <img width="120" style="border-radius: 60%; margin-left: 130px; margin-top: 20px;" src="logo.png">
+                    <h1
+                        style="font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif; margin-left: 60px; font-size: 28px; line-height: 0.1; margin-top: 50px; color: #fff;;">
+                        Hey there,</h1>
+                    <p
+                        style="margin-left: 60px; font-family: Poppins; font-size: 17px; color: rgb(194, 193, 193); line-height: 1.2;">
+                        Start your journey with Quick Bite by signing in with us</p>
+                    <p style="margin-left: 60px; font-family: Poppins; font-size: 16px; color: rgb(194, 193, 193);">
+                        Already
+                        have an account? Login</p>
+                    <button onclick="slide_to_login()" class="login-btn-side-menu" type="submit">Login</button>
+                </div>
+
+                <div class="signup-part">
+                    <h1
+                        style="font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif; margin-left: 100px; color: #050f53;">
+                        Sign Up to Quick Bite</h1>
+                    <img width="40"
+                        style="cursor: pointer; margin-bottom: 20px; margin-left: 140px; border: 2px solid rgb(144, 144, 145);box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.4);  border-radius: 25px;"
+                        src="google.png" alt="">
+                    <img width="30"
+                        style="cursor: pointer; margin-bottom: 20px; padding: 5px; margin-left: 5px; border: 2px solid rgb(145, 144, 144);box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.4);  border-radius: 25px;"
+                        src="https://www.freeiconspng.com/uploads/discord-black-icon-1.png" alt="">
+                    <img width="29"
+                        style="cursor: pointer; margin-bottom: 20px; margin-left: 5px; border: 2px solid rgb(145, 144, 144);box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.4);  padding: 5px; border-radius: 25px;"
+                        src="https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/x-social-media-black-icon.png"
+                        alt="">
+                    <input class="u-name" type="text" placeholder="Username">
+                    <input class="email" type="email" placeholder="Email">
+                    <input class="password" type="password" placeholder="Password">
+                    <button class="signup-btn-scr2" type="submit">Sign Up</button>
+                </div>
+
             </div>
+
         </div>
-
-        <div class="scr2">
-            <div class="side-menu-signup">
-                <img width="120" style="border-radius: 60%; margin-left: 130px; margin-top: 20px;" src="logo.png">
-                <h1
-                    style="font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif; margin-left: 60px; font-size: 28px; line-height: 0.1; margin-top: 50px; color: #fff;;">
-                    Hey there,</h1>
-                <p
-                    style="margin-left: 60px; font-family: Poppins; font-size: 17px; color: rgb(194, 193, 193); line-height: 1.2;">
-                    Start your journey with Quick Bite by signing in with us</p>
-                <p style="margin-left: 60px; font-family: Poppins; font-size: 16px; color: rgb(194, 193, 193);">Already
-                    have an account? Login</p>
-                <button onclick="slide_to_login()" class="login-btn-side-menu" type="submit">Login</button>
-            </div>
-
-            <div class="signup-part">
-                <h1
-                    style="font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif; margin-left: 100px; color: #050f53;;">
-                    Sign Up to Quick Bite</h1>
-                <img width="40"
-                    style="cursor: pointer; margin-bottom: 20px; margin-left: 140px; border: 2px solid rgb(144, 144, 145);box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.4);  border-radius: 25px;"
-                    src="google.png" alt="">
-                <img width="30"
-                    style="cursor: pointer; margin-bottom: 20px; padding: 5px; margin-left: 5px; border: 2px solid rgb(145, 144, 144);box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.4);  border-radius: 25px;"
-                    src="https://www.freeiconspng.com/uploads/discord-black-icon-1.png" alt="">
-                <img width="29"
-                    style="cursor: pointer; margin-bottom: 20px; margin-left: 5px; border: 2px solid rgb(145, 144, 144);box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.4);  padding: 5px; border-radius: 25px;"
-                    src="https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/x-social-media-black-icon.png"
-                    alt="">
-                <input class="u-name" type="text" placeholder="Username">
-                <input class="email" type="email" placeholder="Email">
-                <input class="password" type="password" placeholder="Password">
-                <button class="signup-btn-scr2" type="submit">Sign Up</button>
-            </div>
-
-        </div>
-
     </div>
+
+    <div class="mobile">
+        <div class="top-mob" style="display: flex;">
+            <img style="width: 50px; height: 48px; border-radius: 50%; margin-left: 10px; margin-top: 10px;"
+                src="logo.png" alt="Quick Bite Logo" /></img>
+            <span
+                style="color: rgb(245, 197, 66); font-weight: 800; font-size: 30px; font-family: Poppins; margin-left: 16px; margin-top: 10px;">Quick
+                Bite</span>
+        </div>
+
+        <h1
+            style="font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif; margin-left: 60px; font-size: 28px; line-height: 0.1; margin-top: 50px; color: #fff;;">
+            Welcome back User</h1>
+        <p
+            style="margin-left: 60px; font-family: Poppins; font-size: 17px; color: rgb(194, 193, 193); line-height: 1.2;">
+            Glad to see you again</p>
+
+        <div class="login-form-mob">
+            <p
+                style="position: absolute; margin-left: 30px; font-family: Poppins; font-size: 18px; color: rgb(136, 134, 134);">
+                Login to resume your journey with Quick Bite</p>
+            <input class="email-l" type="email" placeholder="Email">
+            <input class="password-l" type="password" placeholder="Password">
+            <button class="login-scr1" type="submit">Login</button>
+            <a href="#" class="forgot-password">Forgot Password</a>
+            <p class="divider">-------- or login with --------</p>
+            <button type="button" class="login-with-google-btn">Google
+            </button>
+            <!-- <button class="login-with-facebook-btn">Facebook -->
+            </button>
+        </div>
+
+        <div class="sign-up-form-mob">
+            <p
+                style="position: absolute; margin-left: 30px; font-family: Poppins; font-size: 18px; color: rgb(136, 134, 134);">
+                Sign up to start your journey with Quick Bite</p>
+            <input class="u-name" type="text" placeholder="Username">
+            <input class="email" type="email" placeholder="Email">
+            <input class="password" type="password" placeholder="Password">
+            <button class="signup-btn-scr2" type="submit">Sign Up</button>
+            <p class="divider">-------- or sign up with --------</p>
+            <button type="button" class="login-with-google-btn">Google
+            </button>
+            <!-- <button class="login-with-facebook-btn">Facebook -->
+            </button>
+        </div>
+    </div>
+
+
+
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
+
     <!-- FOR SIGNUP, TO STORE IN DB -->
     <script>
         const firebaseConfig = {
@@ -147,20 +204,31 @@
                     document.querySelector(".loader-desc").innerText = "Your account was successfully created";
                     document.querySelector(".loader-desc").marginTop = "0";
                     document.querySelector(".loader").style.display = "none";
-                    document.querySelector(".success").style.display="block"
+                    document.querySelector(".success").style.display = "block"
                     setTimeout(() => {
                         window.location.href = "campus-code.html";
-                        loader.style.display="none";
-                    },1000);
+                        loader.style.display = "none";
+                    }, 1000);
                 }, 3000);
             }).catch((err) => {
                 console.error(err);
             });
         });
 
+
+        function slide_to_signup() {
+            document.querySelector(".scr1").classList.add("hide");
+            document.querySelector(".scr2").classList.add("active");
+        }
+
+        function slide_to_login() {
+            document.querySelector(".scr1").classList.remove("hide");
+            document.querySelector(".scr2").classList.remove("active");
+        }
+
+
     </script>
 
 </body>
 
 </html>
-
