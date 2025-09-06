@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="logo.png" type="image/x-icon" />
+    <link rel="stylesheet" href="style.css">
+    <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
+    <title>Enter Campus Code - Quick Bite</title>
+</head>
+
+<body class="campus-page">
+    <div class="overlay">
+        <div class="loading-card">
+            <div class="top" style="display: flex;">
+                <div class="loader"></div>
+                <span style="margin-left: 5%; color: black; font-size: 17px; font-family: Poppins;">We are checking the
+                    Campus Code</span>
+            </div>
+
+            <img class="success" width="25%" style="display: none;"
+                src="https://media.istockphoto.com/id/496603666/vector/flat-icon-check.jpg?s=612x612&w=0&k=20&c=BMYf-7moOtevP8t46IjHHbxJ4x4I0ZoFReIp9ApXBqU="
+                alt="">
+
+            <span class="loader-desc"
+                style="display: block; margin-left: 32%; margin-top: 15%; font-family: Poppins; font-size: 18px;">Please wait...</span>
+        </div>
+    </div>
+    <div class="left"></div>
+    <div class="right">
+        <div class="container">
+            <img style="width: 50px; height: 48px; border-radius: 50%; margin-left: 2px;" src="logo.png"
+                alt="Quick Bite Logo" /></img>
+            <span
+                style="color: rgb(245, 197, 66); font-weight: 800; font-size: 30px; font-family: Poppins; margin-left: 16px; margin-top: 50px;">Quick
+                Bite</span>
+            <h1>Enter your Campus Code</h1>
+            <input class="code-input" type="text" id="codeInput" placeholder="Enter your code">
+            <button class="code-submit" onclick="checkCode()">Continue</button>
+        </div>
+
+        <script src="script.js"></script>
+</body>
+
+</html>
