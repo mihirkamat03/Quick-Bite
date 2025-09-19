@@ -107,4 +107,112 @@ document.querySelector(".talk").addEventListener("click", function (e) {
 });
 
 
+document.addEventListener('DOMContentLoaded', () => {
+  const card = document.querySelector('.product-card-cat');
+  const foodTypes = document.querySelector('.food-types');
 
+  card.addEventListener('click', () => {
+    foodTypes.style.display = "block";
+  });
+});
+
+
+
+// SENDING ITEMS TO CART BACKEND
+
+// FIRST FOOD TYPES OPENER
+window.addEventListener('DOMContentLoaded', () => {
+
+  const foodTypes = document.querySelector(".food-types");
+  document.querySelector(".product-card-cat").addEventListener("click", () => {
+    foodTypes.classList.add("anim");
+    foodTypes.style.display = "block";
+  })
+
+  document.querySelector(".food-types-close").addEventListener("click", () => {
+    foodTypes.classList.remove("anim");
+    foodTypes.style.display = "none";
+  })
+
+  const productCards = document.querySelectorAll('.product-card-cat');
+  const foodTypesContainer = document.querySelector('.food-types');
+  const cartItemsContainer = document.querySelector('.cart-item-outer');
+  const cartTotalLabel = document.querySelector('.cart-item-total');
+  const buybtn = document.querySelector('.buy');
+  const noItemImg = document.querySelector('.no-items-img');  // Make sure this element exists in HTML
+
+  let selectedProduct = null;
+
+  productCards.forEach(card => {
+    card.addEventListener('click', () => {
+      selectedProduct = {
+        img: card.querySelector('img').src,
+        name: card.querySelector('p3').innerText.split('\n')[0],
+        price: card.querySelector('p3').innerText.split('from ₹')[1]
+      };
+      foodTypesContainer.style.display = 'block';
+    });
+  });
+
+  const typeItems = document.querySelectorAll('.type-item');
+
+  typeItems.forEach(typeItem => {
+    typeItem.addEventListener('click', () => {
+      if (!selectedProduct) return;
+
+      const typeImg = typeItem.querySelector('img').src;
+      const typeName = typeItem.querySelector('.type-item-name').innerText;
+      const typeCal = typeItem.querySelector('.type-item-cal').innerText;
+      const typePrice = typeItem.querySelector('.type-item-price').innerText;
+
+      const cartItem = document.createElement('div');
+      cartItem.classList.add('cart-item');
+
+      cartItem.innerHTML = `
+            <img src="${typeImg}" class="cart-item-img" />
+            <div class="cart-item-detail-container">
+                <label class="cart-item-name">${typeName}</label>
+                <label class="cart-item-cal">${typeCal}</label>
+            </div>
+            <label class="cart-item-price">${typePrice}</label>
+            <button class="cart-item-add">Add</button>
+        `;
+
+      cartItemsContainer.appendChild(cartItem);
+
+      updateCartTotal();
+
+      foodTypesContainer.style.display = 'none';
+      selectedProduct = null;
+    });
+  });
+
+  function updateCartTotal() {
+    const prices = document.querySelectorAll('.cart-item-price');
+    let total = 0;
+
+    prices.forEach(priceEl => {
+      const price = parseInt(priceEl.innerText.replace('₹', ''));
+      total += price;
+    });
+
+    cartTotalLabel.innerText = `₹${total}`;
+
+    if (price === 0) {
+      buybtn.style.cursor = "default";
+      cartItemsContainer.style.maxHeight = "25vh";
+      noItemImg.style.display = "block";  // Show the "no items" image
+    } else {
+      buybtn.style.cursor = "pointer";
+      noItemImg.style.display = "none";  // Hide the "no items" image
+    }
+
+  }
+
+  // Close food-types popup when clicking close
+  document.querySelector('.food-types-close').addEventListener('click', () => {
+    foodTypesContainer.style.display = 'none';
+    selectedProduct = null;
+  });
+
+});

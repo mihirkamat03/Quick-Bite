@@ -166,7 +166,7 @@
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
 
-    <!-- FOR SIGNUP, TO STORE IN DB -->
+    <!-- FOR SIGNUP || TO STORE IN DB -->
     <script>
         const firebaseConfig = {
             apiKey: "AIzaSyD-meHFhL3uq4wNJDL7fa5GsykIgx7BDoE",
@@ -190,7 +190,7 @@
             const password = document.querySelector(".password").value;
             const loader = document.querySelector(".overlay");
 
-            db.ref("Users").child(username).set({
+            db.ref("Users").child(email).set({
 
                 username: username,
                 email: email,
@@ -227,6 +227,49 @@
         }
 
 
+    </script>
+
+    <!-- FOR CHECKING IF USER EXISTS OR NO || LOGIN SYSTEM -->
+    <script>
+        document.querySelector(".login-scr1").addEventListener("click", function (e) {
+            e.preventDefault();
+
+            const email = document.querySelector(".email-l").value;
+            const password = document.querySelector(".password-l").value;
+
+            db.ref("Users").once("value")
+                .then(snapshot => {
+                    let found = false;
+                    snapshot.forEach(childSnap => {
+                        const userData = childSnap.val();
+                        if (userData.email === email && userData.password === password) {
+                            found = true;
+                            const loader = document.querySelector(".overlay");
+                            loader.style.display = "block";
+                            console.log(email, password);
+                            setTimeout(() => {
+                                document.querySelector(".loader-top").innerText = "Success!!";
+                                document.querySelector(".loader-top").marginLeft = "35%";
+                                document.querySelector(".loader-desc").innerText = "Welcome "+userData.username;
+                                document.querySelector(".loader-desc").marginTop = "0";
+                                document.querySelector(".loader").style.display = "none";
+                                document.querySelector(".success").style.display = "block"
+                                setTimeout(() => {
+                                    window.location.href = "category.html";
+                                    loader.style.display = "none";
+                                }, 1000);
+                            }, 3000);
+                        }
+                    });
+                    if (!found) {
+                        alert("Invalid email or password!");
+                    }
+                })
+                .catch(err => {
+                    console.error(err);
+                });
+
+        });
     </script>
 
 </body>
