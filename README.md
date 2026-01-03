@@ -1,6 +1,6 @@
 # 🍔 QuickBite - Digital Campus Cafeteria
 
-![QuickBite Banner](src/banner-placeholder.png) 
+![QuickBite Banner]
 > **No Queues. No Waiting. Just Eating.** > A smart food ordering platform designed specifically for college campuses to eliminate chaos and digitize the cafeteria experience.
 
 ![Status](https://img.shields.io/badge/Status-Active_Development-brightgreen)
@@ -54,7 +54,9 @@ It features a modern **"Pro Motion"** user interface with glassmorphism, stagger
 
 About me- 
 Mihir Kamat
+
 Role: Lead Developer & Designer
+
 Email: kamatmihir.cse@gmail.com
 
 Portfolio: https://github.com/mihirkamat03/portfolio
