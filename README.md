@@ -51,7 +51,8 @@ It features a modern **"Pro Motion"** user interface with glassmorphism, stagger
 * **Authentication:** Firebase Auth
 * **Deployment:** GitHub Pages / Vercel
 
-About me- 
+## About me-
+
 Mihir Kamat
 
 Role: Lead Developer & Designer
