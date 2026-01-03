@@ -78,6 +78,7 @@ button { font-family: 'Poppins', sans-serif; }
 .logo-section {
     display: flex;
     align-items: center;
+    border-radius: 50px;
     gap: 15px;
     margin-bottom: 3rem;
 }
