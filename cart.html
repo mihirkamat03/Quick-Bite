@@ -1,266 +1,89 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="src/logo.png" type="image/x-icon" />
+    <title>QuickBite | Cart</title>
+    <link href='https://fonts.googleapis.com/css?family=Poppins:wght@300;400;500;600;700&display=swap' rel='stylesheet'>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
-    <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
-    <title>My Cart - Quick Bite</title>
 </head>
-
-<body class="cart-page">
-    <div class="side-bar-cart">
-        <nav>
-            <div class="logo">
-                <img style="width: 50px; height: 48px; border-radius: 50%; margin-left: 2px;" src="src/logo.png"
-                    alt="Quick Bite Logo" /></img>
-                <p1>QuickBite</p1>
+<body>
+    <div class="dashboard-container">
+        <aside class="sidebar">
+            <div class="logo-section">
+                <div class="logo-icon"><i class="fa-solid fa-burger"></i></div>
+                <h2>QuickBite</h2>
             </div>
+            <nav class="nav-menu">
+                <a href="index.html" class="nav-link"><i class="fa-solid fa-house"></i> <span>Home</span></a>
+                <a href="category.html" class="nav-link"><i class="fa-solid fa-utensils"></i> <span>Menu</span></a>
+                <a href="cart.html" class="nav-link active"><i class="fa-solid fa-cart-shopping"></i> <span>Cart</span></a>
+                <a href="account_info.html" class="nav-link"><i class="fa-solid fa-user"></i> <span>Profile</span></a>
+            </nav>
+        </aside>
 
-            <div class="indicator-cart"></div>
-            <div class="indicator_hover"></div>
+        <main class="main-content">
+            <header class="top-bar">
+                <h1>Your Order</h1>
+            </header>
 
-            <a href="index.html">
-                <img src="src/home.jpeg" class="navlink" style="margin-left: 25px;"></img>
-                <p>Home</p>
-            </a>
-            <a href="category.html">
-                <img src="src/category.jpg" class="navlink" style="width: 30px; height: 30px;"></img>
-                <p>Categories</p>
-            </a>
-            <a href="#">
-                <img src="src/heart.png" class="navlink" style="width: 35px; height: 25px; margin-left: 20px;"></img>
-                <p>Favorites</p>
-            </a>
-            <a href="#">
-                <img src="src/cart.png" style="width: 30px; height: 25px; margin-left: 20px;" class="navlink"></img>
-                <p>Cart</p>
-            </a>
-            <a href="account_info.html">
-                <img src="https://img.icons8.com/ios7/512/FFFFFF/settings--v2.png"
-                    style="width: 26px; height: 25px; margin-left: 25px;" class="navlink"></img>
-                <p>Settings</p>
-            </a>
-            <hr class="cart">
-            <a class="bottom-a-nav-bar" href="#">
-                <img src="https://img.icons8.com/m_outlined/512/FFFFFF/appointment-reminders.png"
-                    class="navlink2"></img>
-                <p2>Notifications</p2>
-            </a>
-            <a class="bottom-a-nav-bar" href="contact.html">
-                <img src="src/call.png" class="navlink2"></img>
-                <p2>Call us</p2>
-            </a>
-        </nav>
-
-    </div>
-    <div class="main-cart">
-        <div class="list">
-            <div class="slider"></div>
-            <h1 style="font-family: Poppins; font-size: 30px; margin-left: 30px; margin-top: 30px; font-weight: 900;">
-                Order List</h1>
-            <div class="time-slider">
-                <strong
-                    style="font-size: 15px; font-family: Poppins; z-index: 1000; margin-left: 35px; width: 100%;">Upcoming</strong>
-                <strong
-                    style="font-size: 15px; font-family: Poppins; z-index: 1000; margin-left: 30px; justify-content: center; width: 100%;">Completed</strong>
-            </div>
-            <div class="tasks">
-                <div class="task1">
-                    <img class="task-img1"
-                        src="https://file.aiquickdraw.com/imgcompressed/img/compressed_8e8ea79b9bb6e05c09646b1691571ad5.webp">
-                    <img class="task-img2"
-                        src="https://everything-delish.com/wp-content/uploads/2021/02/IMG_6467-scaled.jpg">
-                    <img class="task-img3"
-                        src="https://png.pngtree.com/png-clipart/20250120/original/pngtree-ai-generated-chicken-biryani-png-image_19962305.png">
-                    <div class="task-details">
-                        <span style="font-size: 16px; font-family: Poppins;font-weight: 00;" class="cart-name">6th
-                            September</span>
-                        <span
-                            style="display: block; color: #323131; font-size: 14px; font-family: Poppins;font-weight: 500;"
-                            class="cart-price">₹300</span>
-
+            <div class="cart-layout">
+                <div class="cart-items">
+                    <div class="cart-item">
+                        <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=100&q=60" alt="Item">
+                        <div class="item-details">
+                            <h4>Cheesy Deluxe Burger</h4>
+                            <p style="color: var(--text-muted);">Spicy Sauce, Extra Cheese</p>
+                            <span class="price">₹250</span>
+                        </div>
+                        <div class="item-controls">
+                            <button class="qty-btn">-</button>
+                            <span>2</span>
+                            <button class="qty-btn">+</button>
+                        </div>
                     </div>
-                    <!-- <button class="reorder first">Order again</button> -->
-                </div>
 
-                <div class="task1">
-                    <img class="task-img1"
-                        src="https://file.aiquickdraw.com/imgcompressed/img/compressed_8e8ea79b9bb6e05c09646b1691571ad5.webp">
-                    <img class="task-img2"
-                        src="https://everything-delish.com/wp-content/uploads/2021/02/IMG_6467-scaled.jpg">
-                    <img class="task-img3"
-                        src="https://png.pngtree.com/png-clipart/20250120/original/pngtree-ai-generated-chicken-biryani-png-image_19962305.png">
-                    <div class="task-details">
-                        <span style="font-size: 16px; font-family: Poppins;font-weight: 00;" class="cart-name">28th
-                            August</span>
-                        <span
-                            style="display: block; color: #323131; font-size: 14px; font-family: Poppins;font-weight: 500;"
-                            class="cart-price">₹300</span>
-
+                    <div class="cart-item">
+                        <img src="https://images.unsplash.com/photo-1563379926898-05f4575a45d8?auto=format&fit=crop&w=100&q=60" alt="Item">
+                        <div class="item-details">
+                            <h4>Creamy Pasta</h4>
+                            <p style="color: var(--text-muted);">White Sauce</p>
+                            <span class="price">₹220</span>
+                        </div>
+                        <div class="item-controls">
+                            <button class="qty-btn">-</button>
+                            <span>1</span>
+                            <button class="qty-btn">+</button>
+                        </div>
                     </div>
-                    <!-- <button class="reorder">Order again</button> -->
-
                 </div>
 
-                <div class="task1">
-                    <img class="task-img1"
-                        src="https://file.aiquickdraw.com/imgcompressed/img/compressed_8e8ea79b9bb6e05c09646b1691571ad5.webp">
-                    <img class="task-img2"
-                        src="https://everything-delish.com/wp-content/uploads/2021/02/IMG_6467-scaled.jpg">
-                    <img class="task-img3"
-                        src="https://png.pngtree.com/png-clipart/20250120/original/pngtree-ai-generated-chicken-biryani-png-image_19962305.png">
-                    <div class="task-details">
-                        <span style="font-size: 16px; font-family: Poppins;font-weight: 00;" class="cart-name">24th
-                            August</span>
-                        <span
-                            style="display: block; color: #323131; font-size: 14px; font-family: Poppins;font-weight: 500;"
-                            class="cart-price">₹300</span>
+                <div class="cart-summary">
+                    <div class="summary-card">
+                        <h3>Order Summary</h3>
+                        <br>
+                        <div class="summary-row">
+                            <span>Subtotal</span>
+                            <span>₹720</span>
+                        </div>
+                        <div class="summary-row">
+                            <span>Tax (5%)</span>
+                            <span>₹36</span>
+                        </div>
+                        <div class="summary-row">
+                            <span>Delivery</span>
+                            <span style="color: var(--primary);">Free</span>
+                        </div>
+                        <div class="summary-total">
+                            <span>Total</span>
+                            <span>₹756</span>
+                        </div>
+                        <button class="btn-primary checkout-btn">Proceed to Pay</button>
                     </div>
-                    <!-- <button class="reorder">Order again</button> -->
-
-                </div>
-
-                <img class="offer"
-                    src="https://png.pngtree.com/png-clipart/20230529/original/pngtree-special-offer-tag-shape-free-vector-png-image_9173639.png"
-                    alt="">
-            </div>
-            <div class="box">
-
-            </div>
-        </div>
-        <div class="cart-sec">
-            <div class="order-info">
-                <span style="margin-left: 18%; font-size: 24px; font-family: Poppins; font-weight: 600; letter-spacing: 2px;">Queue:</span>
-                <span
-                    style="margin-left: 30%; display: block; font-weight: 600; font-family: Poppins; font-size: 32px; color: rgb(234, 61, 26); letter-spacing:1px; margin-right: 5px;">#12</strong>
-            </div>
-            <h1 style="font-family: Poppins; font-size: 24px; margin-left: 50px; margin-top: 50px; font-weight: 900;">
-                Order Info</h1>
-            <div class="order-prep-info">
-                <img style="margin-top: 15px; margin-left: 20px;" width="45px" height="50px"
-                    src="https://icons.veryicon.com/png/o/business/credit-backstage/fill-in-the-report.png" alt="">
-                <div class="one">
-                    <span>Order Status:</span>
-                    <span
-                        style="font-size: 24px; color: rgb(123, 30, 211); letter-spacing:1px; margin-right: 5px;">Preparing</strong>
-                </div>
-                <img style="margin-top: 15px; margin-left: 50px;" width="50px" height="50px"
-                    src="https://cdn-icons-png.flaticon.com/512/3448/3448485.png" alt="">
-                <div class="two">
-                    <span>Preparing time:</span>
-                    <span style="font-size: 24px; color: rgb(123, 30, 211); letter-spacing:1px; margin-right: 5px;">10
-                        minutes</strong>
-                </div>
-                <!-- <hr style="position: absolute; margin-left: 250px; bottom: 350px; width:1px; height: 30px; border: 1px solid rgb(135, 135, 135); background-color: rgb(135, 135, 135); color: black;"> -->
-                <img style="margin-left: 50px;" width="90px" height="75px"
-                    src="https://png.pngtree.com/recommend-works/png-clipart/20250101/ourmid/pngtree-orange-delivery-man-on-motorcycle-png-image_15017922.png"
-                    alt="">
-                <div class="three">
-                    <span>Delivery in:</span>
-                    <span style="font-size: 24px; color: rgb(123, 30, 211); letter-spacing:1px; margin-right: 5px;">3
-                        minutes</strong>
                 </div>
             </div>
-            <div class="cart-list">
-                <img class="cart-img"
-                    src="https://everything-delish.com/wp-content/uploads/2021/02/IMG_6467-scaled.jpg">
-                <img style="position: absolute; width: 20px; margin-bottom: 35px; margin-left: 53px;"
-                    src="src/veg icon.png">
-                <div class="cart-details">
-                    <span style="font-size: 17px; font-family: Poppins;font-weight: 500;" class="cart-name">Marie
-                        Theresa Pesto Buratta</span>
-                    <span
-                        style="display: block; color: #323131; font-size: 14px; font-family: Poppins;font-weight: 500;"
-                        class="cart-price">₹650</span>
-                </div>
-                <div class="quantity">
-                    <span style="color: #323131; font-size: 13.5px; font-family: Poppins;">Quantity</span>
-                    <span
-                        style="display: flex; width: 28px; justify-content: center; border-radius: 20%; background-color: #d4d2d2; font-size: 18px; font-family: Poppins; margin-left: 25%;">4</span>
-                </div>
-                <div class="addons">
-                    <span
-                        style="display: block; color: #323131; font-size: 13.5px; font-family: Poppins;">Add-ons</span>
-                    <img style="width: 23px; border: 1px solid #000; border-radius: 30%; margin-left: 27%;"
-                        src="https://static.thenounproject.com/png/2310577-200.png">
-                </div>
-            </div>
-            <div class="cart-list">
-                <img class="cart-img"
-                    src="https://file.aiquickdraw.com/imgcompressed/img/compressed_8e8ea79b9bb6e05c09646b1691571ad5.webp">
-                <img style="position: absolute; width: 20px; margin-bottom: 35px; margin-left: 53px;" src="src/veg icon.png"
-                    alt="">
-                <div class="cart-details">
-                    <span style="font-size: 17px; font-family: Poppins;font-weight: 500;" class="cart-name">Crispy
-                        Veggie Burger | Aloo Patty</span>
-                    <span
-                        style="display: block; color: #323131; font-size: 14px; font-family: Poppins;font-weight: 500;"
-                        class="cart-price">₹250</span>
-                </div>
-                <div class="quantity">
-                    <span style="color: #323131; font-size: 13px; font-family: Poppins;">Quantity</span>
-                    <span
-                        style="display: flex; width: 28px; justify-content: center; border-radius: 20%; background-color: #d4d2d2; font-size: 18px; font-family: Poppins; margin-left: 25%;">2</span>
-                </div>
-                <div class="addons">
-                    <span
-                        style="display: block; color: #323131; font-size: 13.5px; font-family: Poppins;">Add-ons</span>
-                    <img style="width: 23px; border: 1px solid #000; border-radius: 30%; margin-left: 27%;"
-                        src="https://static.thenounproject.com/png/2310577-200.png">
-                </div>
-            </div>
-            <div class="cart-list">
-                <img class="cart-img"
-                    src="https://png.pngtree.com/png-clipart/20250120/original/pngtree-ai-generated-chicken-biryani-png-image_19962305.png">
-                <img style="position: absolute; width: 20px; margin-bottom: 35px; margin-left: 53px; border-radius: 50%;"
-                    src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSk7oKgiGVRSI8i7LGxP3JkW3h-h67U1HIerfKqSh9S8Z6dqTgUCn0IDfWoZdWvzDOMUwE&usqp=CAU"
-                    alt="">
-                <div class="cart-details">
-                    <span style="font-size: 17px; font-family: Poppins;font-weight: 500;" class="cart-name"> Chicken
-                        Biryani</span>
-                    <span
-                        style="display: block; color: #323131; font-size: 14px; font-family: Poppins;font-weight: 500;"
-                        class="cart-price">₹300</span>
-                </div>
-                <div class="quantity">
-                    <span style="color: #323131; font-size: 13px; font-family: Poppins;">Quantity</span>
-                    <span
-                        style="display: flex; width: 28px; justify-content: center; border-radius: 20%; background-color: #d4d2d2; font-size: 18px; font-family: Poppins; margin-left: 25%;">3</span>
-                </div>
-                <div class="addons">
-                    <span
-                        style="display: block; color: #323131; font-size: 13.5px; font-family: Poppins;">Add-ons</span>
-                    <img style="width: 23px; border: 1px solid #000; border-radius: 30%; margin-left: 27%;"
-                        src="https://static.thenounproject.com/png/2310577-200.png">
-                </div>
-            </div>
-            <button class="submit">Accept Order</button>
-
-            <p style="display: block; color: rgb(53, 52, 52); font-size: 17px; font-family: Poppins;font-weight: 500; margin-left: 50px; margin-top: 20px;"
-                class="cart-name">Total Payment:</span>
-                <span
-                    style="font-size: 18px; font-family: Poppins;font-weight: 600; margin-left: 5px; margin-top: 20px;"
-                    class="cart-name">₹1300</span>
-
-            <p style="display: block; color: rgb(53, 52, 52); font-size: 17px; font-family: Poppins;font-weight: 500; margin-left: 50px;"
-                class="cart-name">Payment method:</span>
-                <span
-                    style="font-size: 18px; font-family: Poppins;font-weight: 600; margin-left: 5px; margin-top: 20px; color: rgb(4, 101, 162);"
-                    class="cart-name">Digital payment (ONLINE)</span>
-
-        </div>
+        </main>
     </div>
-    <div class="notification">
-        <span style="font-family: Poppins; font-size: 20px; font-weight: 600;">Notifications</span>
-        <span style="cursor: pointer; color: blue; font-family: Poppins; margin-left: 175px;">close</span>
-        <img style="display: block; margin-left: 110px;" width="130px" src="src/no noti.png" alt="">
-        <span style="display: block; color: grey; font-family: Poppins; font-size: 16px; margin-top: 30px;">You didn't
-            receive any notification till now.</span>
-    </div>
-
+    <script src="script.js"></script>
 </body>
-
 </html>
