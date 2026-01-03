@@ -237,6 +237,24 @@ button { font-family: 'Poppins', sans-serif; }
     transform: rotate(90deg); 
 }
 
+.btn-icon-edit {
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    border: none;
+    background: var(--dark-bg);
+    color: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.3s var(--transition);
+}
+
+.btn-icon-edit:hover { 
+    background: var(--primary); 
+}
+
 /* --- Banner (Home) --- */
 .banner-section {
     height: 280px;
@@ -426,3 +444,179 @@ button { font-family: 'Poppins', sans-serif; }
 @keyframes popIn {
     to { transform: scale(1); opacity: 1; }
 }
+
+/* --- Floating Cart Bar --- */
+.floating-cart-bar {
+    position: fixed;
+    bottom: -100px; /* Hidden initially */
+    left: 130%;
+    transform: translateX(-50%);
+    width: 90%;
+    max-width: 600px;
+    background: var(--dark-bg);
+    color: white;
+    padding: 15px 25px;
+    border-radius: 20px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+    transition: bottom 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.cart-bar-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.cart-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-weight: 600;
+}
+
+.cart-info .divider {
+    color: #444;
+}
+
+.btn-view-cart {
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: 0.3s;
+}
+
+.btn-view-cart:hover {
+    background: var(--primary-hover);
+    transform: scale(1.05);
+}
+
+
+/* --- Campus Page Redesign --- */
+.campus-page-body {
+    background: #F3F4F6;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.campus-container {
+    display: flex;
+    height: 100vh;
+}
+
+/* Left Visual Section */
+.campus-visual {
+    flex: 1;
+    background: url('https://images.unsplash.com/photo-1523050335102-c625954870f9?auto=format&fit=crop&w=1200&q=80');
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.visual-overlay {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: linear-gradient(135deg, rgba(31, 29, 43, 0.9), rgba(255, 107, 107, 0.6));
+}
+
+.visual-content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    color: white;
+}
+
+.logo-circle {
+    width: 100px;
+    height: 100px;
+    background: rgba(255, 255, 255, 0);
+    border-radius: 50%;
+    margin: 0 auto 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+
+.logo-circle img { width: 100px; border-radius: 50%; }
+
+/* Right Form Section */
+.campus-form-section {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+    background: white;
+}
+
+.form-card {
+    width: 100%;
+    max-width: 400px;
+}
+
+.form-card h2 { font-size: 2rem; margin-bottom: 10px; color: var(--dark-bg); }
+
+.input-field-group {
+    position: relative;
+    margin: 30px 0;
+}
+
+.input-field-group i {
+    position: absolute;
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-muted);
+}
+
+.input-field-group input {
+    width: 100%;
+    padding: 18px 20px 18px 55px;
+    border-radius: 16px;
+    border: 2px solid #F3F4F6;
+    background: #F9FAFB;
+    font-size: 1rem;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+.input-field-group input:focus {
+    border-color: var(--primary);
+    background: white;
+    box-shadow: 0 10px 20px rgba(255, 107, 107, 0.1);
+    outline: none;
+}
+
+.full-width { width: 100%; }
+
+.support-link { margin-top: 30px; text-align: center; color: var(--text-muted); font-size: 0.9rem; }
+.support-link a { color: var(--primary); font-weight: 600; }
+
+/* Custom Modal Spinner */
+.custom-spinner {
+    width: 60px;
+    height: 60px;
+    border: 5px solid #f3f3f3;
+    border-top: 5px solid var(--primary);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 20px;
+}
+
+@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+.hidden { display: none; }
+
+
+
