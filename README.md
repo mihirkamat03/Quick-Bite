@@ -1,6 +1,5 @@
 # 🍔 QuickBite - Digital Campus Cafeteria
 
-![QuickBite Banner]
 > **No Queues. No Waiting. Just Eating.** > A smart food ordering platform designed specifically for college campuses to eliminate chaos and digitize the cafeteria experience.
 
 ![Status](https://img.shields.io/badge/Status-Active_Development-brightgreen)
