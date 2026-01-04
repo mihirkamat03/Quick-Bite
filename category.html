@@ -1,124 +1,68 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <title>QuickBite | Menu</title>
-    <link href='https://fonts.googleapis.com/css?family=Poppins:wght@300;400;500;600;700&display=swap' rel='stylesheet'>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 </head>
-
-<body>
+<body class="category-page">
     <div class="dashboard-container">
         <aside class="sidebar">
             <div class="logo-section">
-                <!-- <div class="logo-icon"> -->
                 <img src="src/logo.png" style="width: 45px; border-radius: 50px;" alt="">
-                <!-- </div> -->
                 <h2>QuickBite</h2>
             </div>
             <nav class="nav-menu">
                 <a href="index.html" class="nav-link"><i class="fa-solid fa-house"></i> <span>Home</span></a>
-                <a href="category.html" class="nav-link active"><i class="fa-solid fa-utensils"></i>
-                    <span>Menu</span></a>
+                <a href="category.html" class="nav-link active"><i class="fa-solid fa-utensils"></i> <span>Menu</span></a>
                 <a href="cart.html" class="nav-link"><i class="fa-solid fa-cart-shopping"></i> <span>Cart</span></a>
+                <a href="order-status.html" class="nav-link"><i class="fa fa-clock"></i> Orders</a>
                 <a href="account_info.html" class="nav-link"><i class="fa-solid fa-user"></i> <span>Profile</span></a>
             </nav>
         </aside>
 
         <main class="main-content">
             <header class="top-bar">
-                <h1>Full Menu</h1>
-                <div class="search-box">
-                    <i class="fa-solid fa-search"></i>
-                    <input type="text" placeholder="Search menu...">
-                </div>
+                <h1>Our Menu</h1>
             </header>
 
-            <div class="product-grid">
-                <div class="food-card" onclick="openModal('Pizza')">
-                    <div class="card-img-container">
-                        <img src="https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=500&q=60"
-                            alt="Pizza">
+            <div class="product-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px;">
+                
+                <div class="food-card">
+                    <div class="card-image">
+                        <img src="https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=500&q=60" style="width:100%; height:150px; object-fit:cover; border-radius:15px;">
                     </div>
-                    <div class="food-info">
-                        <h4>Italian Pizzas</h4>
-                        <p>Starting from ₹199</p>
-                        <button class="btn-primary" style="width: 100%">View Options</button>
-                    </div>
-                </div>
-
-                <div class="food-card" onclick="openModal('Burger')">
-                    <div class="card-img-container">
-                        <img src="https://images.unsplash.com/photo-1550547660-d9450f859349?auto=format&fit=crop&w=500&q=60"
-                            alt="Burger">
-                    </div>
-                    <div class="food-info">
-                        <h4>Juicy Burgers</h4>
-                        <p>Starting from ₹149</p>
-                        <button class="btn-primary" style="width: 100%">View Options</button>
+                    <div class="card-details" style="padding:10px;">
+                        <h4>Margherita Pizza</h4>
+                        <p style="color:gray; font-size:0.9rem;">Classic cheese & basil</p>
+                        <div style="display:block; justify-content:space-between; margin-top:10px;">
+                            <span class="price" style="font-weight:bold; color:#FF6B6B;">₹199</span>
+                            <button class="btn-primary" style="width: 100%" onclick="addToCart('Margherita Pizza', 199, 'https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=500&q=60')">Add to Cart</button>
+                        </div>
                     </div>
                 </div>
 
-                <div class="food-card" onclick="openModal('Dessert')">
-                    <div class="card-img-container">
-                        <img src="https://images.unsplash.com/photo-1563729784474-d77dbb933a9e?auto=format&fit=crop&w=500&q=60"
-                            alt="Cake">
+                <div class="food-card">
+                    <div class="card-image">
+                        <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=500&q=60" style="width:100%; height:150px; object-fit:cover; border-radius:15px;">
                     </div>
-                    <div class="food-info">
-                        <h4>Desserts</h4>
-                        <p>Starting from ₹99</p>
-                        <button class="btn-primary" style="width: 100%">View Options</button>
+                    <div class="card-details" style="padding:10px;">
+                        <h4>Cheesy Burger</h4>
+                        <p style="color:gray; font-size:0.9rem;">Juicy patty with cheddar</p>
+                        <div style="display:block; justify-content:space-between; margin-top:10px;">
+                            <span class="price" style="font-weight:bold; color:#FF6B6B;">₹149</span>
+                            <button class="btn-primary" style="width: 100%" onclick="addToCart('Cheesy Burger', 149, 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=500&q=60')">Add to Cart</button>
+                        </div>
                     </div>
                 </div>
+
             </div>
         </main>
     </div>
 
-    <div id="foodModal" class="modal-overlay">
-        <div class="modal-content">
-            <div style="display:flex; justify-content:space-between; margin-bottom:20px;">
-                <h2 id="modalTitle">Select Item</h2>
-                <i class="fa-solid fa-xmark" onclick="closeModal()" style="cursor:pointer; font-size:1.5rem;"></i>
-            </div>
-
-            <div class="cart-item">
-                <img src="https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=100&q=60"
-                    alt="Food">
-                <div class="item-details">
-                    <h4>Margherita</h4>
-                    <span class="price">₹199</span>
-                </div>
-                <button class="btn-icon"><i class="fa-solid fa-plus"></i></button>
-            </div>
-
-            <div class="cart-item">
-                <img src="https://images.unsplash.com/photo-1604382354936-07c5d9983bd3?auto=format&fit=crop&w=100&q=60"
-                    alt="Food">
-                <div class="item-details">
-                    <h4>Farmhouse</h4>
-                    <span class="price">₹299</span>
-                </div>
-                <button class="btn-icon"><i class="fa-solid fa-plus"></i></button>
-            </div>
-            <div id="floatingCartBar" class="floating-cart-bar">
-    <div class="cart-bar-content">
-        <div class="cart-info">
-            <i class="fa-solid fa-cart-shopping"></i>
-            <span id="cartCountText">0 Items Added</span>
-            <span class="divider">|</span>
-            <span id="cartTotalPrice">₹0</span>
-        </div>
-        <button class="btn-view-cart" onclick="window.location.href='cart.html'">
-            View Cart <i class="fa-solid fa-chevron-right"></i>
-        </button>
-    </div>
-</div>
-        </div>
-    </div>
-
     <script src="script.js"></script>
 </body>
-
 </html>

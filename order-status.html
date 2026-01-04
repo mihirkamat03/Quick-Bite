@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>QuickBite | Order Status</title>
+    <link rel="stylesheet" href="style.css">
+    <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
+</head>
+
+<body>
+    <div class="dashboard-container">
+        <aside class="sidebar">
+            <div class="logo-section">
+                <img src="src/logo.png" style="width: 45px; border-radius: 50px;" alt="">
+                <h2>QuickBite</h2>
+            </div>
+            <nav class="nav-menu">
+                <a href="index.html" class="nav-link"><i class="fa-solid fa-house"></i> <span>Home</span></a>
+                <a href="category.html" class="nav-link"><i class="fa-solid fa-utensils"></i> <span>Menu</span></a>
+                <a href="cart.html" class="nav-link"><i class="fa-solid fa-cart-shopping"></i> <span>Cart</span></a>
+                <a href="order-status.html" class="nav-link active"><i class="fa fa-clock"></i> Orders</a>
+                <a href="account_info.html" class="nav-link"><i class="fa-solid fa-user"></i> <span>Profile</span></a>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <header class="top-bar">
+                <h1>My Orders</h1>
+            </header>
+
+            <h3 style="margin: 20px 0;">Live Status</h3>
+            <div id="liveOrderContainer">
+                <p style="color: gray;">No active orders.</p>
+            </div>
+
+            <h3 style="margin: 30px 0 20px;">Order History</h3>
+            <div id="pastOrderContainer">
+                <p style="color: gray;">Loading history...</p>
+            </div>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        firebase.auth().onAuthStateChanged(user => {
+            if (user) {
+                // Fetch Orders for this User
+                db.ref('orders').orderByChild('userId').equalTo(user.uid).on('value', snap => {
+                    const liveContainer = document.getElementById('liveOrderContainer');
+                    const pastContainer = document.getElementById('pastOrderContainer');
+
+                    liveContainer.innerHTML = "";
+                    pastContainer.innerHTML = "";
+
+                    const orders = snap.val();
+                    if (!orders) {
+                        pastContainer.innerHTML = "<p>No orders found.</p>";
+                        return;
+                    }
+
+                    // Convert object to array and reverse to show newest first
+                    const orderArray = Object.keys(orders).map(key => ({ ...orders[key], key })).reverse();
+
+                    let hasLive = false;
+
+                    orderArray.forEach(order => {
+                        const date = new Date(order.timestamp).toLocaleString();
+
+                        // Check if order is Active (Pending/Preparing) or Completed (Ready/Delivered)
+                        const isActive = (order.status === "Pending" || order.status === "Preparing");
+
+                        const cardHTML = `
+                            <div class="order-card" style="background: white; padding: 25px; border-radius: 15px; margin-bottom: 20px; border-left: 6px solid ${getStatusColor(order.status)}; box-shadow: 0 5px 15px rgba(0,0,0,0.05);">
+                                <div style="display:flex; justify-content:space-between; align-items:center;">
+                                    <div>
+                                        <h4 style="font-size: 1.1rem; margin-bottom: 5px;">Order #${order.key.slice(-4)}</h4>
+                                        <p style="font-size: 0.85rem; color: #888;">${date}</p>
+                                    </div>
+                                    <div style="text-align:right;">
+                                        <span style="background: ${getStatusBg(order.status)}; color: ${getStatusColor(order.status)}; padding: 6px 12px; border-radius: 20px; font-weight: 600; font-size: 0.9rem;">
+                                            ${order.status}
+                                        </span>
+                                    </div>
+                                </div>
+                                
+                                <hr style="border: 0; border-top: 1px dashed #eee; margin: 15px 0;">
+                                
+                                <div style="display:flex; justify-content:space-between; align-items:center;">
+                                    <div>
+                                        <p style="font-size: 0.9rem; margin-bottom: 5px;"><strong>${order.items.length} Items</strong></p>
+                                        <p style="font-size: 0.85rem; color: #666;">Queue No: <strong style="color: #333; font-size: 1rem;">${order.queueNumber || '--'}</strong></p>
+                                    </div>
+                                    <div style="font-size: 1.2rem; font-weight: bold;">₹${order.total}</div>
+                                </div>
+                            </div>
+                        `;
+
+                        if (isActive) {
+                            liveContainer.innerHTML += cardHTML;
+                            hasLive = true;
+                        } else {
+                            pastContainer.innerHTML += cardHTML;
+                        }
+                    });
+
+                    if (!hasLive) liveContainer.innerHTML = '<p style="color:gray;">No active orders right now.</p>';
+                });
+            }
+        });
+
+        // Helpers for Colors
+        function getStatusColor(status) {
+            if (status === 'Pending') return '#f59e0b'; // Orange
+            if (status === 'Preparing') return '#3b82f6'; // Blue
+            if (status === 'Ready') return '#10b981'; // Green
+            return '#6b7280'; // Gray
+        }
+        function getStatusBg(status) {
+            if (status === 'Pending') return '#fef3c7';
+            if (status === 'Preparing') return '#dbeafe';
+            if (status === 'Ready') return '#d1fae5';
+            return '#f3f4f6';
+        }
+    </script>
+</body>
+
+</html>

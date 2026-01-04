@@ -4,27 +4,31 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>QuickBite | Profile</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href='https://fonts.googleapis.com/css?family=Poppins:wght@300;400;500;600;700&display=swap' rel='stylesheet'>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
+
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
 </head>
 <body>
     <div class="dashboard-container">
         <aside class="sidebar">
             <div class="logo-section">
-                <!-- <div class="logo-icon"> -->
-                    <img src="src/logo.png" style="width: 45px; border-radius: 50px;" alt="">
-                <!-- </div> -->
+                <img src="src/logo.png" style="width: 45px; border-radius: 50px;" alt="">
                 <h2>QuickBite</h2>
             </div>
             <nav class="nav-menu">
                 <a href="index.html" class="nav-link"><i class="fa-solid fa-house"></i> <span>Home</span></a>
                 <a href="category.html" class="nav-link"><i class="fa-solid fa-utensils"></i> <span>Menu</span></a>
                 <a href="cart.html" class="nav-link"><i class="fa-solid fa-cart-shopping"></i> <span>Cart</span></a>
+                <a href="order-status.html" class="nav-link"><i class="fa fa-clock"></i> Orders</a>
                 <a href="account_info.html" class="nav-link active"><i class="fa-solid fa-user"></i> <span>Profile</span></a>
             </nav>
             <div class="nav-menu" style="flex: 0;">
-                <a href="login-signup.html" class="nav-link"><i class="fa-solid fa-right-from-bracket"></i> <span>Logout</span></a>
+                <a href="#" onclick="logout()" class="nav-link"><i class="fa-solid fa-right-from-bracket"></i> <span>Logout</span></a>
             </div>
         </aside>
 
@@ -39,22 +43,22 @@
                     <div style="position: relative; width: 140px; height: 140px; margin: 0 auto 20px;">
                         <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=200&q=80" 
                              style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 4px solid var(--light-bg);" alt="Profile">
-                        <button class="btn-icon-edit" style="position: absolute; bottom: 5px; right: 5px; background: var(--primary); width: 40px; height: 40px;">
+                        <button class="btn-icon-edit" style="position: absolute; bottom: 5px; right: 5px; background: var(--primary); width: 40px; height: 40px; border:none; border-radius:50%; color:white; cursor:pointer;">
                             <i class="fa-solid fa-pencil"></i>
                         </button>
                     </div>
                     
-                    <h2 style="margin-bottom: 5px;">Mihir Kamat</h2>
+                    <h2 style="margin-bottom: 5px;" id="dispName">Loading...</h2>
                     <p style="color: var(--text-muted); font-size: 0.9rem;">Foodie Member</p>
                     
                     <div style="margin-top: 30px; text-align: left;">
                         <div style="margin-bottom: 20px;">
                             <label style="color: var(--text-muted); font-size: 0.85rem;">Email Address</label>
-                            <p style="font-weight: 500;">kamatmihir.cse@gmail.com</p>
+                            <p style="font-weight: 500;" id="email">...</p>
                         </div>
                         <div style="margin-bottom: 20px;">
                             <label style="color: var(--text-muted); font-size: 0.85rem;">Phone Number</label>
-                            <p style="font-weight: 500;">+91 70212 96177</p>
+                            <p style="font-weight: 500;" id="phone">...</p>
                         </div>
                     </div>
                 </div>
@@ -120,8 +124,43 @@
                     </div>
                 </div>
             </div>
+            
         </main>
     </div>
+    
     <script src="script.js"></script>
+
+    <script>
+        // Wait for Firebase to check who is logged in
+        firebase.auth().onAuthStateChanged(user => {
+            if(user) {
+                // Fetch User Details from Realtime DB
+                db.ref('users/' + user.uid).once('value').then(snap => {
+                    const data = snap.val();
+                    if(data) {
+                        // Update the HTML Elements with Data
+                        // We use .innerText because these are <h2> and <p> tags, not input boxes
+                        document.getElementById('dispName').innerText = data.username || "Student";
+                        document.getElementById('email').innerText = data.email || user.email;
+                        
+                        if(data.phone) {
+                            document.getElementById('phone').innerText = data.phone;
+                        } else {
+                            document.getElementById('phone').innerText = "+91 (Update Profile)";
+                        }
+                    }
+                });
+            } else {
+                // Not logged in? Go back to login
+                window.location.href = "login-signup.html";
+            }
+        });
+
+        function logout() {
+            firebase.auth().signOut().then(() => {
+                window.location.href = "login-signup.html";
+            });
+        }
+    </script>
 </body>
 </html>

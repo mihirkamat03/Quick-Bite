@@ -4,11 +4,13 @@
 <head>
     <meta charset="UTF-8">
     <title>QuickBite | Login</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
     <link rel="stylesheet" href="style-ls.css">
+    <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
 </head>
-
-<body>
+<body class="ls-page">
     <div class="auth-container animate__animated animate__fadeInUp">
 
         <div class="form-wrapper">
@@ -78,10 +80,6 @@
         </div>
     </div>
 
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
-
     <script>
         // 1. Paste your Firebase Configuration here
         const firebaseConfig = {
@@ -114,11 +112,11 @@
 
             if (!email || !password) return alert("Please fill all fields");
 
-            // 1. Create user in Firebase Auth
+            // Create user in Firebase Auth
             auth.createUserWithEmailAndPassword(email, password)
                 .then((userCredential) => {
                     const user = userCredential.user;
-                    // 2. Store extra details in Realtime Database
+                    // Store extra details in Realtime Database
                     return db.ref('users/' + user.uid).set({
                         username: name,
                         email: email,

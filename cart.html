@@ -1,91 +1,126 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>QuickBite | Cart</title>
-    <link href='https://fonts.googleapis.com/css?family=Poppins:wght@300;400;500;600;700&display=swap' rel='stylesheet'>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
 </head>
+
 <body>
     <div class="dashboard-container">
         <aside class="sidebar">
             <div class="logo-section">
-                <!-- <div class="logo-icon"> -->
-                    <img src="src/logo.png" style="width: 45px; border-radius: 50px;" alt="">
-                <!-- </div> -->
+                <img src="src/logo.png" style="width: 45px; border-radius: 50px;" alt="">
                 <h2>QuickBite</h2>
             </div>
             <nav class="nav-menu">
                 <a href="index.html" class="nav-link"><i class="fa-solid fa-house"></i> <span>Home</span></a>
                 <a href="category.html" class="nav-link"><i class="fa-solid fa-utensils"></i> <span>Menu</span></a>
                 <a href="cart.html" class="nav-link active"><i class="fa-solid fa-cart-shopping"></i> <span>Cart</span></a>
+                <a href="order-status.html" class="nav-link"><i class="fa fa-clock"></i> Orders</a>
                 <a href="account_info.html" class="nav-link"><i class="fa-solid fa-user"></i> <span>Profile</span></a>
             </nav>
+            
         </aside>
 
         <main class="main-content">
             <header class="top-bar">
-                <h1>Your Order</h1>
+                <h1>Your Cart</h1>
             </header>
 
-            <div class="cart-layout">
-                <div class="cart-items">
-                    <div class="cart-item">
-                        <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=100&q=60" alt="Item">
-                        <div class="item-details">
-                            <h4>Cheesy Deluxe Burger</h4>
-                            <p style="color: var(--text-muted);">Spicy Sauce, Extra Cheese</p>
-                            <span class="price">₹250</span>
-                        </div>
-                        <div class="item-controls">
-                            <button class="qty-btn">-</button>
-                            <span>2</span>
-                            <button class="qty-btn">+</button>
-                        </div>
-                    </div>
-
-                    <div class="cart-item">
-                        <img src="https://images.unsplash.com/photo-1563379926898-05f4575a45d8?auto=format&fit=crop&w=100&q=60" alt="Item">
-                        <div class="item-details">
-                            <h4>Creamy Pasta</h4>
-                            <p style="color: var(--text-muted);">White Sauce</p>
-                            <span class="price">₹220</span>
-                        </div>
-                        <div class="item-controls">
-                            <button class="qty-btn">-</button>
-                            <span>1</span>
-                            <button class="qty-btn">+</button>
-                        </div>
-                    </div>
+            <div id="cartView">
+                <div id="cartItemsContainer" style="margin-bottom: 30px;">
                 </div>
 
-                <div class="cart-summary">
-                    <div class="summary-card">
-                        <h3>Order Summary</h3>
-                        <br>
-                        <div class="summary-row">
-                            <span>Subtotal</span>
-                            <span>₹720</span>
-                        </div>
-                        <div class="summary-row">
-                            <span>Tax (5%)</span>
-                            <span>₹36</span>
-                        </div>
-                        <div class="summary-row">
-                            <span>Delivery</span>
-                            <span style="color: var(--primary);">Free</span>
-                        </div>
-                        <div class="summary-total">
-                            <span>Total</span>
-                            <span>₹756</span>
-                        </div>
-                        <button class="btn-primary checkout-btn">Proceed to Pay</button>
-                    </div>
+                <div class="summary-card" style="background:white; padding:20px; border-radius:15px; width: 300px;">
+                    <h3>Total: <span id="cartTotal">₹0</span></h3>
+                    <button id="checkoutBtn" onclick="placeOrder()"
+                        style="width:100%; background:#FF6B6B; color:white; border:none; padding:15px; margin-top:20px; border-radius:10px; cursor:pointer; font-size:1.1rem;">Place
+                        Order</button>
                 </div>
             </div>
         </main>
     </div>
+
     <script src="script.js"></script>
+    <script>
+        // Load Cart on Page Load
+        window.onload = function () {
+            const cart = JSON.parse(localStorage.getItem('quickbite_cart'));
+            const container = document.getElementById('cartItemsContainer');
+            const totalEl = document.getElementById('cartTotal');
+
+            if (!cart || cart.items.length === 0) {
+                container.innerHTML = "<p>Cart is empty.</p>";
+                return;
+            }
+
+            totalEl.innerText = "₹" + cart.total;
+            container.innerHTML = "";
+
+            cart.items.forEach(item => {
+                container.innerHTML += `
+                    <div class="cart-item" style="display:flex; align-items:center; background:white; padding:10px; margin-bottom:10px; border-radius:10px;">
+                        <img src="${item.image}" width="60" style="border-radius:10px; margin-right:15px;">
+                        <div style="flex:1;">
+                            <h4>${item.name}</h4>
+                            <p>₹${item.price} x ${item.quantity}</p>
+                        </div>
+                        <div style="font-weight:bold;">₹${item.price * item.quantity}</div>
+                    </div>
+                `;
+            });
+        };
+
+        // Send Order to Firebase
+        function placeOrder() {
+            const user = firebase.auth().currentUser;
+            if (!user) {
+                showNotification('error', 'Access Denied', 'Please login to place an order.', 'login-signup.html');
+                return;
+            }
+
+            const cart = JSON.parse(localStorage.getItem('quickbite_cart'));
+
+            // Empty Cart Check
+            if (!cart || cart.items.length === 0) {
+                showNotification('error', 'Cart Empty', 'Add some delicious food first!');
+                return;
+            }
+
+            // 1. Show Loading
+            showNotification('loading', 'Processing', 'Placing your order with the kitchen...');
+
+            const orderData = {
+                userId: user.uid,
+                userEmail: user.email,
+                items: cart.items,
+                total: cart.total,
+                status: "Pending",
+                timestamp: Date.now(),
+                queueNumber: Math.floor(Math.random() * 50) + 1
+            };
+
+            db.ref('orders').push(orderData)
+                .then(() => {
+                    localStorage.removeItem('quickbite_cart');
+
+                    // 2. Show Success with Redirect
+                    showNotification('success', 'Order Placed!', 'Your order ID has been generated.', 'order-status.html');
+                })
+                .catch(err => {
+                    showNotification('error', 'Order Failed', err.message);
+                });
+        }
+    </script>
 </body>
+
 </html>
