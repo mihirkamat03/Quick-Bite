@@ -6,7 +6,8 @@
 ![Tech](https://img.shields.io/badge/Stack-HTML_|_CSS_|_JS_|_Firebase-orange)
 ![License](https://img.shields.io/badge/License-MIT-blue)
 
-![Project Screenshots](preview/ss1.PNG) (preview/ss2.PNG) (preview/ss3.PNG)
+<img src="preview/ss4.PNG" alt="Project Screenshots" width="400">   <img src="preview/ss1.PNG" alt="Project Screenshots" width="400">
+<img src="preview/ss2.PNG" alt="Project Screenshots" width="400">   <img src="preview/ss3.PNG" alt="Project Screenshots" width="400">
 ---
 
 ## 📖 Table of Contents
