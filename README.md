@@ -6,7 +6,7 @@
 ![Tech](https://img.shields.io/badge/Stack-HTML_|_CSS_|_JS_|_Firebase-orange)
 ![License](https://img.shields.io/badge/License-MIT-blue)
 
-![Project Screenshots](preview\ss1.PNG) (preview\ss2.PNG) (preview\ss2.PNG)
+![Project Screenshots](preview/ss1.PNG) (preview/ss2.PNG) (preview/ss3.PNG)
 ---
 
 ## 📖 Table of Contents
