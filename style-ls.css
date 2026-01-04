@@ -4,6 +4,22 @@
     width: 0;
 }
 
+/* --- Entrance Animation --- */
+@keyframes slideUp {
+    0% {
+        opacity: 0;
+        transform: translateY(100px); /* Starts 100px lower */
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0); /* Ends at original position */
+    }
+}
+
+/* Apply to both forms */
+.auth-container {
+    animation: slideUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
 
 /* --- Pro Animated Background --- */
 body {

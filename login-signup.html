@@ -127,7 +127,7 @@
                 .then(() => {
                     window.location.href = "index.html"; // Redirect on success
                 })
-                .catch((error) => alert("Email/ Password seems to be wrong, please re-check it"));
+                .catch((error) => alert(error.message));
         });
 
         // --- LOGIN LOGIC ---
