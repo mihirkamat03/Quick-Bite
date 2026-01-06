@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,6 +10,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
     <div class="dashboard-container">
         <aside class="sidebar">
@@ -24,7 +26,9 @@
                 <a href="account_info.html" class="nav-link"><i class="fa-solid fa-user"></i> <span>Profile</span></a>
             </nav>
             <div class="nav-menu" style="flex: 0;">
-                <a href="login-signup.html" class="nav-link"><i class="fa-solid fa-right-from-bracket"></i> <span>Logout</span></a>
+                <a id="authBtn" href="login-signup.html" class="nav-link">
+                    <i class="fa-solid fa-right-to-bracket"></i> <span>Login</span>
+                </a>
             </div>
         </aside>
 
@@ -40,18 +44,21 @@
                         <input type="text" placeholder="Search for food...">
                     </div>
                     <div class="profile-pic">
-                        <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=100&q=80" alt="User">
+                        <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=100&q=80"
+                            alt="User">
                     </div>
                 </div>
             </header>
 
             <section class="banner-section">
                 <div class="banner-overlay"></div>
-                <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=1200&q=80" alt="Banner">
+                <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=1200&q=80"
+                    alt="Banner">
                 <div class="banner-content">
                     <h2>50% Off Today</h2>
                     <p>On all Asian Cuisine orders above ₹500</p>
-                    <button class="btn-primary" style="margin-top: 15px;">Order Now <i class="fa-solid fa-arrow-right"></i></button>
+                    <button class="btn-primary" style="margin-top: 15px;">Order Now <i
+                            class="fa-solid fa-arrow-right"></i></button>
                 </div>
             </section>
 
@@ -68,7 +75,8 @@
                 <div class="product-grid">
                     <div class="food-card">
                         <div class="card-img-container">
-                            <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=500&q=60" alt="Burger">
+                            <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=500&q=60"
+                                alt="Burger">
                         </div>
                         <div class="food-info">
                             <h4>Cheesy Deluxe Burger</h4>
@@ -81,7 +89,8 @@
                     </div>
                     <div class="food-card">
                         <div class="card-img-container">
-                            <img src="https://images.unsplash.com/photo-1604382354936-07c5d9983bd3?auto=format&fit=crop&w=500&q=60" alt="Pizza">
+                            <img src="https://images.unsplash.com/photo-1604382354936-07c5d9983bd3?auto=format&fit=crop&w=500&q=60"
+                                alt="Pizza">
                         </div>
                         <div class="food-info">
                             <h4>Pepperoni Feast</h4>
@@ -94,7 +103,8 @@
                     </div>
                     <div class="food-card">
                         <div class="card-img-container">
-                            <img src="https://images.unsplash.com/photo-1563379926898-05f4575a45d8?auto=format&fit=crop&w=500&q=60" alt="Pasta">
+                            <img src="https://images.unsplash.com/photo-1563379926898-05f4575a45d8?auto=format&fit=crop&w=500&q=60"
+                                alt="Pasta">
                         </div>
                         <div class="food-info">
                             <h4>Creamy Pasta</h4>
@@ -110,5 +120,42 @@
         </main>
     </div>
     <script src="script.js"></script>
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyCtuzk9qJa1zQXskLqVX9OfOmk01wvWtKo",
+            authDomain: "quickbite-d830f.firebaseapp.com",
+            projectId: "quickbite-d830f",
+            storageBucket: "quickbite-d830f.firebasestorage.app",
+            messagingSenderId: "279810717556",
+            appId: "1:279810717556:web:d1fbede1d1c6e58b7f5e21"
+        };
+        if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+
+        const authBtn = document.getElementById('authBtn');
+
+        auth.onAuthStateChanged(user => {
+            if (user) {
+                authBtn.innerHTML = '<i class="fa-solid fa-right-from-bracket"></i> <span>Logout</span>';
+                authBtn.href = "#"; 
+                authBtn.onclick = logoutUser; 
+            } else {
+                authBtn.innerHTML = '<i class="fa-solid fa-right-to-bracket"></i> <span>Login</span>';
+                authBtn.href = "login-signup.html"; 
+                authBtn.onclick = null;
+            }
+        });
+
+        // 3. Logout Function
+        function logoutUser() {
+            auth.signOut().then(() => {
+                alert("Logged out successfully");
+                window.location.reload();
+            }).catch(error => {
+                console.error("Logout Error:", error);
+            });
+        }
+    </script>
 </body>
+
 </html>
