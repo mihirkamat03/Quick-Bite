@@ -1,5 +1,4 @@
 // --- 1. FIREBASE CONFIGURATION ---
-// REPLACE THESE WITH YOUR ACTUAL KEYS FROM FIREBASE CONSOLE
 const firebaseConfig = {
     apiKey: "AIzaSyCtuzk9qJa1zQXskLqVX9OfOmk01wvWtKo",
     authDomain: "quickbite-d830f.firebaseapp.com",
@@ -10,66 +9,133 @@ const firebaseConfig = {
     databaseURL: "https://quickbite-d830f-default-rtdb.firebaseio.com"
 };
 
-// Initialize Firebase (Check if already initialized to prevent errors)
 if (typeof firebase !== 'undefined' && !firebase.apps.length) {
     firebase.initializeApp(firebaseConfig);
 }
 
-// Global Variables
 const auth = typeof firebase !== 'undefined' ? firebase.auth() : null;
 const db = typeof firebase !== 'undefined' ? firebase.database() : null;
 
-// --- 2. GLOBAL UI LOGIC (Sidebar, etc.) ---
+
+// --- 2. GLOBAL UI LOGIC ---
 document.addEventListener("DOMContentLoaded", () => {
-    // Active Link Highlighter
+    // A. Highlight Active Navbar Link
     const currentPath = window.location.pathname.split("/").pop();
     document.querySelectorAll('.nav-link').forEach(link => {
         if (link.getAttribute('href') === currentPath) {
             link.classList.add('active');
         }
     });
+
+    // B. SYNC MENU QUANTITIES (The Fix for your issue)
+    // This checks if we are on the menu page and updates buttons to match the cart
+    if (document.querySelector('.food-card')) {
+        syncMenuWithCart();
+    }
 });
 
 
-// --- 3. CART LOGIC (LocalStorage) ---
+// --- 3. SYNC LOGIC (New Function) ---
+function syncMenuWithCart() {
+    const cart = JSON.parse(localStorage.getItem('quickbite_cart')) || { items: [] };
+    
+    // Loop through every card on the screen
+    document.querySelectorAll('.food-card').forEach(card => {
+        const name = card.getAttribute('data-name');
+        
+        // Check if this item is in the cart
+        const itemInCart = cart.items.find(item => item.name === name);
+        
+        // Update the number display
+        const qtyDisplay = card.querySelector('.qty-display');
+        if (qtyDisplay) {
+            qtyDisplay.innerText = itemInCart ? itemInCart.quantity : 0;
+        }
+    });
+}
+
+
+// --- 4. BUTTON INTERACTION LOGIC ---
+
+function toggleFav(btn) {
+    btn.classList.toggle('active');
+    const icon = btn.querySelector('i');
+    if (btn.classList.contains('active')) {
+        icon.classList.remove('fa-regular');
+        icon.classList.add('fa-solid');
+    } else {
+        icon.classList.remove('fa-solid');
+        icon.classList.add('fa-regular');
+    }
+}
+
+function updateQty(btn, change) {
+    const container = btn.parentElement;
+    const display = container.querySelector('.qty-display');
+    const card = btn.closest('.food-card');
+    
+    // Get Data
+    const name = card.getAttribute('data-name');
+    const price = parseInt(card.getAttribute('data-price'));
+    const img = card.getAttribute('data-img');
+    
+    let currentQty = parseInt(display.innerText);
+    let newQty = currentQty + change;
+    if (newQty < 0) newQty = 0;
+
+    // Update UI immediately
+    display.innerText = newQty;
+
+    // Update Storage
+    if (change > 0) {
+        addToCart(name, price, img);
+    } else if (change < 0) {
+        removeFromCart(name);
+    }
+}
+
+
+// --- 5. CART DATA LOGIC ---
+
 function addToCart(name, price, image, type = 'Veg') {
     let cart = JSON.parse(localStorage.getItem('quickbite_cart')) || { items: [], total: 0 };
-
-    // Check if item exists
     const existingItem = cart.items.find(item => item.name === name);
 
     if (existingItem) {
         existingItem.quantity += 1;
     } else {
-        cart.items.push({
-            name: name,
-            price: parseInt(price),
-            image: image,
-            type: type,
-            quantity: 1
-        });
+        cart.items.push({ name, price, image, type, quantity: 1 });
     }
 
+    saveCart(cart);
+}
+
+function removeFromCart(name) {
+    let cart = JSON.parse(localStorage.getItem('quickbite_cart')) || { items: [], total: 0 };
+    const existingItem = cart.items.find(item => item.name === name);
+
+    if (existingItem) {
+        existingItem.quantity -= 1;
+        
+        // Remove item if 0
+        if (existingItem.quantity <= 0) {
+            cart.items = cart.items.filter(item => item.name !== name);
+        }
+        saveCart(cart);
+    }
+}
+
+function saveCart(cart) {
     // Recalculate Total
     cart.total = cart.items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-
+    
     localStorage.setItem('quickbite_cart', JSON.stringify(cart));
-    alert(`${name} added to cart!`);
-    updateCartUI(); // Helper if on a page with cart UI
-}
-
-function updateCartUI() {
-    // This function can be overridden by specific pages
-    console.log("Cart updated");
+    console.log("Cart Updated:", cart);
 }
 
 
-
-
-
-// --- Global Notification System ---
+// --- 6. NOTIFICATION SYSTEM ---
 function showNotification(type, title, message, redirectUrl = null) {
-    // 1. Create HTML Structure if it doesn't exist
     if (!document.getElementById('customDialog')) {
         const dialogHTML = `
             <div id="customDialog" class="custom-dialog-overlay">
@@ -79,8 +145,7 @@ function showNotification(type, title, message, redirectUrl = null) {
                     <p id="dialogMsg" class="dialog-msg"></p>
                     <button id="dialogBtn" class="dialog-btn">Okay</button>
                 </div>
-            </div>
-        `;
+            </div>`;
         document.body.insertAdjacentHTML('beforeend', dialogHTML);
     }
 
@@ -90,17 +155,14 @@ function showNotification(type, title, message, redirectUrl = null) {
     const p = document.getElementById('dialogMsg');
     const btn = document.getElementById('dialogBtn');
 
-    // 2. Reset Classes
     icon.className = 'fa-solid dialog-icon';
     btn.style.display = 'inline-block';
-
-    // 3. Configure Content based on Type
     h3.innerText = title;
     p.innerText = message;
 
     if (type === 'loading') {
         icon.classList.add('fa-circle-notch', 'loading');
-        btn.style.display = 'none'; // Hide button for loading
+        btn.style.display = 'none';
     } else if (type === 'success') {
         icon.classList.add('fa-circle-check', 'success');
         btn.onclick = () => {
@@ -111,7 +173,5 @@ function showNotification(type, title, message, redirectUrl = null) {
         icon.classList.add('fa-circle-xmark', 'error');
         btn.onclick = () => overlay.classList.remove('active');
     }
-
-    // 4. Show Dialog
     overlay.classList.add('active');
 }

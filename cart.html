@@ -13,6 +13,53 @@
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
+
+    <style>
+        /* --- Animation for Removing Items --- */
+        @keyframes slideOutRight {
+            0% { 
+                transform: translateX(0); 
+                opacity: 1; 
+                max-height: 100px; /* Approximate height of card */
+                margin-bottom: 10px;
+            }
+            100% { 
+                transform: translateX(100%); 
+                opacity: 0; 
+                max-height: 0;
+                margin-bottom: 0;
+                padding: 0;
+                border: none;
+            }
+        }
+
+        .slide-out {
+            animation: slideOutRight 0.5s cubic-bezier(0.55, -0.04, 0.91, 0.94) forwards;
+            overflow: hidden; /* Important for collapsing height */
+        }
+
+        /* --- Remove Button Style --- */
+        .btn-remove {
+            background: #fee2e2;
+            color: #ef4444;
+            border: none;
+            width: 35px;
+            height: 35px;
+            border-radius: 10px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.2s;
+            margin-left: 15px;
+        }
+
+        .btn-remove:hover {
+            background: #ef4444;
+            color: white;
+            transform: scale(1.1);
+        }
+    </style>
 </head>
 
 <body>
@@ -29,7 +76,6 @@
                 <a href="order-status.html" class="nav-link"><i class="fa fa-clock"></i> Orders</a>
                 <a href="account_info.html" class="nav-link"><i class="fa-solid fa-user"></i> <span>Profile</span></a>
             </nav>
-            
         </aside>
 
         <main class="main-content">
@@ -39,28 +85,41 @@
 
             <div id="cartView">
                 <div id="cartItemsContainer" style="margin-bottom: 30px;">
-                </div>
+                    </div>
 
                 <div class="summary-card" style="background:white; padding:20px; border-radius:15px; width: 300px;">
                     <h3>Total: <span id="cartTotal">₹0</span></h3>
                     <button id="checkoutBtn" class="btn-primary" onclick="placeOrder()"
-                        style="width:100%; background:#FF6B6B; color:white; border:none; padding:12px; margin-top:20px; border-radius:10px; cursor:pointer; font-size:1.1rem;">Place
-                        Order</button>
+                        style="width:100%; background:#FF6B6B; color:white; border:none; padding:12px; margin-top:20px; border-radius:10px; cursor:pointer; font-size:1.1rem;">
+                        Place Order
+                    </button>
                 </div>
             </div>
         </main>
     </div>
 
     <script src="script.js"></script>
+
     <script>
-        // Load Cart on Page Load
+        // 1. Load Cart on Page Load
         window.onload = function () {
+            renderCart();
+        };
+
+        // 2. Render Function (Reusable)
+        function renderCart() {
             const cart = JSON.parse(localStorage.getItem('quickbite_cart'));
             const container = document.getElementById('cartItemsContainer');
             const totalEl = document.getElementById('cartTotal');
 
-            if (!cart || cart.items.length === 0) {
-                container.innerHTML = "<p>Cart is empty.</p>";
+            if (!cart || !cart.items || cart.items.length === 0) {
+                container.innerHTML = `
+                    <div style="text-align:center; padding: 40px; color:#888;">
+                        <i class="fa-solid fa-cart-arrow-down" style="font-size: 3rem; margin-bottom:15px; opacity:0.5;"></i>
+                        <p>Cart is empty.</p>
+                        <a href="category.html" class="btn-primary" style="display:inline-block; margin-top:10px; font-size:0.9rem;">Browse Menu</a>
+                    </div>`;
+                totalEl.innerText = "₹0";
                 return;
             }
 
@@ -69,19 +128,59 @@
 
             cart.items.forEach(item => {
                 container.innerHTML += `
-                    <div class="cart-item" style="display:flex; align-items:center; background:white; padding:10px; margin-bottom:10px; border-radius:10px;">
-                        <img src="${item.image}" width="60" style="border-radius:10px; margin-right:15px;">
+                    <div class="cart-item" id="item-${item.name.replace(/\s+/g, '-')}" style="display:flex; align-items:center; background:white; padding:15px; margin-bottom:10px; border-radius:16px;">
+                        
+                        <img src="${item.image}" width="70" height="70" style="border-radius:12px; margin-right:15px; object-fit:cover;">
+                        
                         <div style="flex:1;">
-                            <h4>${item.name}</h4>
-                            <p>₹${item.price} x ${item.quantity}</p>
+                            <h4 style="margin-bottom:4px;">${item.name}</h4>
+                            <p style="color:gray; font-size:0.9rem;">₹${item.price} x ${item.quantity}</p>
                         </div>
-                        <div style="font-weight:bold;">₹${item.price * item.quantity}</div>
+                        
+                        <div style="font-weight:bold; font-size:1.1rem; margin-right:10px;">₹${item.price * item.quantity}</div>
+                        
+                        <button class="btn-remove" onclick="deleteItem('${item.name}', this)">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
                     </div>
                 `;
             });
-        };
+        }
 
-        // Send Order to Firebase
+        // 3. Delete Item with Animation
+        function deleteItem(name, btnElement) {
+            // A. Find the specific row
+            const row = btnElement.closest('.cart-item');
+
+            // B. Add the animation class
+            row.classList.add('slide-out');
+
+            // C. Wait for animation (500ms) then remove data
+            setTimeout(() => {
+                let cart = JSON.parse(localStorage.getItem('quickbite_cart'));
+                
+                // Filter out the item completely
+                cart.items = cart.items.filter(item => item.name !== name);
+                
+                // Recalculate Total
+                cart.total = cart.items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+                
+                // Save and Re-render
+                localStorage.setItem('quickbite_cart', JSON.stringify(cart));
+                
+                // We remove the element from DOM immediately to avoid full re-render flickering
+                row.remove(); 
+                
+                // Update text
+                document.getElementById('cartTotal').innerText = "₹" + cart.total;
+
+                // If empty, show empty state
+                if(cart.items.length === 0) renderCart();
+
+            }, 500); // Matches CSS animation duration
+        }
+
+        // 4. Send Order to Firebase
         function placeOrder() {
             const user = firebase.auth().currentUser;
             if (!user) {
@@ -91,14 +190,15 @@
 
             const cart = JSON.parse(localStorage.getItem('quickbite_cart'));
 
-            // Empty Cart Check
             if (!cart || cart.items.length === 0) {
                 showNotification('error', 'Cart Empty', 'Add some delicious food first!');
                 return;
             }
 
-            // 1. Show Loading
-            showNotification('loading', 'Processing', 'Placing your order with the kitchen...');
+            // Check Wallet Logic (If implemented)
+            // ...
+
+            showNotification('loading', 'Processing', 'Placing your order...');
 
             const orderData = {
                 userId: user.uid,
@@ -113,8 +213,6 @@
             db.ref('orders').push(orderData)
                 .then(() => {
                     localStorage.removeItem('quickbite_cart');
-
-                    // 2. Show Success with Redirect
                     showNotification('success', 'Order Placed!', 'Your order ID has been generated.', 'order-status.html');
                 })
                 .catch(err => {
@@ -123,5 +221,4 @@
         }
     </script>
 </body>
-
 </html>

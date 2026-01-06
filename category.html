@@ -3,13 +3,58 @@
 <head>
     <meta charset="UTF-8">
     <title>QuickBite | Menu</title>
-    <link rel="icon" href="src/logo.png" type="image/x-icon">
-    <link rel="stylesheet" href="style.css">
+    <link href='https://fonts.googleapis.com/css?family=Poppins:wght@300;400;500;600;700&display=swap' rel='stylesheet'>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
-    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        /* --- Category Grouping Styles --- */
+        .category-section {
+            margin-bottom: 40px;
+            animation: fadeInUp 0.5s ease;
+        }
+
+        .category-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .category-header h2 {
+            font-size: 1.5rem;
+            color: #1e293b;
+            font-weight: 700;
+            margin: 0;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .category-badge {
+            background: var(--primary);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            margin-left: 15px;
+            font-weight: 600;
+        }
+
+        /* Responsive Grid for Cards */
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+        }
+    </style>
+
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
 </head>
-<body class="category-page">
+
+<body>
     <div class="dashboard-container">
         <aside class="sidebar">
             <div class="logo-section">
@@ -27,43 +72,108 @@
 
         <main class="main-content">
             <header class="top-bar">
-                <h1>Our Menu</h1>
+                <div>
+                    <h1>Our Menu</h1>
+                    <p style="color: #64748b; font-size: 0.9rem;">Delicious food ordered by category</p>
+                </div>
             </header>
 
-            <div class="product-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px;">
-                
-                <div class="food-card">
-                    <div class="card-image">
-                        <img src="https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=500&q=60" style="width:100%; height:150px; object-fit:cover; border-radius:15px;">
-                    </div>
-                    <div class="card-details" style="padding:10px;">
-                        <h4>Margherita Pizza</h4>
-                        <p style="color:gray; font-size:0.9rem;">Classic cheese & basil</p>
-                        <div style="display:block; justify-content:space-between; margin-top:10px;">
-                            <span class="price" style="font-weight:bold; color:#FF6B6B;">₹199</span>
-                            <button class="btn-primary" style="width: 100%" onclick="addToCart('Margherita Pizza', 199, 'https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=500&q=60')">Add to Cart</button>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="food-card">
-                    <div class="card-image">
-                        <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=500&q=60" style="width:100%; height:150px; object-fit:cover; border-radius:15px;">
-                    </div>
-                    <div class="card-details" style="padding:10px;">
-                        <h4>Cheesy Burger</h4>
-                        <p style="color:gray; font-size:0.9rem;">Juicy patty with cheddar</p>
-                        <div style="display:block; justify-content:space-between; margin-top:10px;">
-                            <span class="price" style="font-weight:bold; color:#FF6B6B;">₹149</span>
-                            <button class="btn-primary" style="width: 100%" onclick="addToCart('Cheesy Burger', 149, 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=500&q=60')">Add to Cart</button>
-                        </div>
-                    </div>
-                </div>
-
+            <div id="userMenuContainer" style="padding-bottom: 50px;">
+                <p style="text-align: center; color: #888; margin-top: 50px;">Loading Menu...</p>
             </div>
         </main>
     </div>
 
     <script src="script.js"></script>
+
+    <script>
+        // 1. Firebase Config (Already handled in script.js, reusing 'db')
+        // We just need to attach the listener
+        
+        const menuRef = db.ref('menu_items');
+
+        menuRef.on('value', (snapshot) => {
+            const container = document.getElementById('userMenuContainer');
+            container.innerHTML = '';
+            
+            const data = snapshot.val();
+            if(!data) {
+                container.innerHTML = '<p style="text-align:center;">No items found.</p>';
+                return;
+            }
+
+            // --- STEP A: Group Items by Category ---
+            const groupedMenu = {};
+            Object.keys(data).forEach(key => {
+                const item = data[key];
+                const category = item.category.trim(); // Grouping Key
+                
+                if (!groupedMenu[category]) {
+                    groupedMenu[category] = [];
+                }
+                groupedMenu[category].push(item);
+            });
+
+            // --- STEP B: Render Sections ---
+            // Sort categories alphabetically
+            Object.keys(groupedMenu).sort().forEach(category => {
+                const items = groupedMenu[category];
+
+                // 1. Create the Section Header
+                let sectionHTML = `
+                    <section class="category-section">
+                        <div class="category-header">
+                            <h2>${category}</h2>
+                            <span class="category-badge">${items.length}</span>
+                        </div>
+                        <div class="menu-grid">
+                `;
+
+                // 2. Create Cards for this Category
+                items.forEach(item => {
+                    sectionHTML += `
+                    <div class="food-card" data-name="${item.name}" data-price="${item.price}" data-img="${item.image}">
+                        <div class="card-image">
+                            <img src="${item.image}" style="width:100%; height:160px; object-fit:cover; border-radius:15px;" onerror="this.src='https://via.placeholder.com/150'">
+                            <button class="fav-btn" onclick="toggleFav(this)">
+                                <i class="fa-regular fa-heart"></i>
+                            </button>
+                        </div>
+                        <div class="card-details" style="padding:12px;">
+                            <h4 style="margin-bottom:5px;">${item.name}</h4>
+                            <p style="color:gray; font-size:0.85rem; margin-bottom:10px;">${item.category}</p>
+                            
+                            <div class="card-footer">
+                                <span class="price" style="font-weight:bold; color:#FF6B6B;">₹${item.price}</span>
+                                
+                                <div class="qty-control-group">
+                                    <button class="btn-mini" onclick="updateQty(this, -1)">
+                                        <i class="fa-solid fa-minus"></i>
+                                    </button>
+                                    <span class="qty-display">0</span>
+                                    <button class="btn-mini" onclick="updateQty(this, 1)">
+                                        <i class="fa-solid fa-plus"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>`;
+                });
+
+                // 3. Close the Grid and Section
+                sectionHTML += `</div></section>`;
+                
+                // 4. Append to Page
+                container.innerHTML += sectionHTML;
+            });
+
+            // --- STEP C: Sync Cart Counts ---
+            // Because we re-generated the HTML, the numbers will be 0.
+            // We call the sync function from script.js to restore cart numbers.
+            if(typeof syncMenuWithCart === "function") {
+                syncMenuWithCart();
+            }
+        });
+    </script>
 </body>
 </html>
