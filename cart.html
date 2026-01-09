@@ -87,7 +87,7 @@
                 <div id="cartItemsContainer" style="margin-bottom: 30px;">
                     </div>
 
-                <div class="summary-card" style="background:white; padding:20px; border-radius:15px; width: 300px;">
+                <div id="summary-card" class="summary-card" style="background:white; padding:20px; border-radius:15px; width: 300px;">
                     <h3>Total: <span id="cartTotal">₹0</span></h3>
                     <button id="checkoutBtn" class="btn-primary" onclick="placeOrder()"
                         style="width:100%; background:#FF6B6B; color:white; border:none; padding:12px; margin-top:20px; border-radius:10px; cursor:pointer; font-size:1.1rem;">
@@ -106,11 +106,11 @@
             renderCart();
         };
 
-        // 2. Render Function (Reusable)
         function renderCart() {
             const cart = JSON.parse(localStorage.getItem('quickbite_cart'));
             const container = document.getElementById('cartItemsContainer');
             const totalEl = document.getElementById('cartTotal');
+            const summary = document.getElementById('summary-card');
 
             if (!cart || !cart.items || cart.items.length === 0) {
                 container.innerHTML = `
@@ -120,6 +120,7 @@
                         <a href="category.html" class="btn-primary" style="display:inline-block; margin-top:10px; font-size:0.9rem;">Browse Menu</a>
                     </div>`;
                 totalEl.innerText = "₹0";
+                summary.style.display = 'none';
                 return;
             }
 
@@ -149,35 +150,26 @@
 
         // 3. Delete Item with Animation
         function deleteItem(name, btnElement) {
-            // A. Find the specific row
             const row = btnElement.closest('.cart-item');
 
-            // B. Add the animation class
             row.classList.add('slide-out');
 
-            // C. Wait for animation (500ms) then remove data
             setTimeout(() => {
                 let cart = JSON.parse(localStorage.getItem('quickbite_cart'));
                 
-                // Filter out the item completely
                 cart.items = cart.items.filter(item => item.name !== name);
                 
-                // Recalculate Total
                 cart.total = cart.items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
                 
-                // Save and Re-render
                 localStorage.setItem('quickbite_cart', JSON.stringify(cart));
                 
-                // We remove the element from DOM immediately to avoid full re-render flickering
                 row.remove(); 
                 
-                // Update text
                 document.getElementById('cartTotal').innerText = "₹" + cart.total;
 
-                // If empty, show empty state
                 if(cart.items.length === 0) renderCart();
 
-            }, 500); // Matches CSS animation duration
+            }, 500); 
         }
 
         // 4. Send Order to Firebase
@@ -191,12 +183,10 @@
             const cart = JSON.parse(localStorage.getItem('quickbite_cart'));
 
             if (!cart || cart.items.length === 0) {
+                // document.getElementById('summary-card').style.display = 'none';
                 showNotification('error', 'Cart Empty', 'Add some delicious food first!');
                 return;
             }
-
-            // Check Wallet Logic (If implemented)
-            // ...
 
             showNotification('loading', 'Processing', 'Placing your order...');
 
