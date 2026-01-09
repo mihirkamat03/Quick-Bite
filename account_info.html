@@ -2,18 +2,58 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>QuickBite | Profile</title>
-    <link rel="icon" href="src/logo.png" type="image/x-icon">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>QuickBite | Menu</title>
     <link href='https://fonts.googleapis.com/css?family=Poppins:wght@300;400;500;600;700&display=swap' rel='stylesheet'>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
+
+    <style>
+        /* --- Category Grouping Styles --- */
+        .category-section {
+            margin-bottom: 40px;
+            animation: fadeInUp 0.5s ease;
+        }
+
+        .category-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .category-header h2 {
+            font-size: 1.5rem;
+            color: #1e293b;
+            font-weight: 700;
+            margin: 0;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .category-badge {
+            background: var(--primary);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            margin-left: 15px;
+            font-weight: 600;
+        }
+
+        /* Responsive Grid for Cards */
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+        }
+    </style>
 
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
 </head>
+
 <body>
     <div class="dashboard-container">
         <aside class="sidebar">
@@ -23,145 +63,117 @@
             </div>
             <nav class="nav-menu">
                 <a href="index.html" class="nav-link"><i class="fa-solid fa-house"></i> <span>Home</span></a>
-                <a href="category.html" class="nav-link"><i class="fa-solid fa-utensils"></i> <span>Menu</span></a>
+                <a href="category.html" class="nav-link active"><i class="fa-solid fa-utensils"></i> <span>Menu</span></a>
                 <a href="cart.html" class="nav-link"><i class="fa-solid fa-cart-shopping"></i> <span>Cart</span></a>
                 <a href="order-status.html" class="nav-link"><i class="fa fa-clock"></i> Orders</a>
-                <a href="account_info.html" class="nav-link active"><i class="fa-solid fa-user"></i> <span>Profile</span></a>
+                <a href="account_info.html" class="nav-link"><i class="fa-solid fa-user"></i> <span>Profile</span></a>
             </nav>
-            <div class="nav-menu" style="flex: 0;">
-                <a href="#" onclick="logout()" class="nav-link"><i class="fa-solid fa-right-from-bracket"></i> <span>Logout</span></a>
-            </div>
         </aside>
 
         <main class="main-content">
             <header class="top-bar">
-                <h1>My Profile</h1>
+                <div>
+                    <h1>Our Menu</h1>
+                    <p style="color: #64748b; font-size: 0.9rem;">Delicious food ordered by category</p>
+                </div>
             </header>
 
-            <div class="account-grid" style="display: grid; grid-template-columns: 1fr 2fr; gap: 30px;">
-                
-                <div class="profile-card" style="background: white; padding: 40px; border-radius: 24px; text-align: center; box-shadow: var(--shadow-soft); animation: fadeInUp 0.8s backwards;">
-                    <div style="position: relative; width: 140px; height: 140px; margin: 0 auto 20px;">
-                        <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=200&q=80" 
-                             style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 4px solid var(--light-bg);" alt="Profile">
-                        <button class="btn-icon-edit" style="position: absolute; bottom: 5px; right: 5px; background: var(--primary); width: 40px; height: 40px; border:none; border-radius:50%; color:white; cursor:pointer;">
-                            <i class="fa-solid fa-pencil"></i>
-                        </button>
-                    </div>
-                    
-                    <h2 style="margin-bottom: 5px;" id="dispName">Loading...</h2>
-                    <p style="color: var(--text-muted); font-size: 0.9rem;">Foodie Member</p>
-                    
-                    <div style="margin-top: 30px; text-align: left;">
-                        <div style="margin-bottom: 20px;">
-                            <label style="color: var(--text-muted); font-size: 0.85rem;">Email Address</label>
-                            <p style="font-weight: 500;" id="email">...</p>
-                        </div>
-                        <div style="margin-bottom: 20px;">
-                            <label style="color: var(--text-muted); font-size: 0.85rem;">Phone Number</label>
-                            <p style="font-weight: 500;" id="phone">...</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="account-details">
-                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: 30px;">
-                        <div class="stat-card" style="background: white; padding: 20px; border-radius: 20px; box-shadow: var(--shadow-soft); display: flex; align-items: center; gap: 15px;">
-                            <div style="width: 50px; height: 50px; background: #e0f2fe; color: #0284c7; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem;">
-                                <i class="fa-solid fa-bag-shopping"></i>
-                            </div>
-                            <div>
-                                <h3 style="font-size: 1.5rem;">24</h3>
-                                <p style="color: var(--text-muted); font-size: 0.8rem;">Orders</p>
-                            </div>
-                        </div>
-                        <div class="stat-card" style="background: white; padding: 20px; border-radius: 20px; box-shadow: var(--shadow-soft); display: flex; align-items: center; gap: 15px;">
-                            <div style="width: 50px; height: 50px; background: #fce7f3; color: #db2777; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem;">
-                                <i class="fa-solid fa-heart"></i>
-                            </div>
-                            <div>
-                                <h3 style="font-size: 1.5rem;">12</h3>
-                                <p style="color: var(--text-muted); font-size: 0.8rem;">Favs</p>
-                            </div>
-                        </div>
-                        <div class="stat-card" style="background: white; padding: 20px; border-radius: 20px; box-shadow: var(--shadow-soft); display: flex; align-items: center; gap: 15px;">
-                            <div style="width: 50px; height: 50px; background: #dcfce7; color: #16a34a; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem;">
-                                <i class="fa-solid fa-wallet"></i>
-                            </div>
-                            <div>
-                                <h3 style="font-size: 1.5rem;">₹450</h3>
-                                <p style="color: var(--text-muted); font-size: 0.8rem;">Wallet</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <h3 style="margin-bottom: 20px; animation: fadeInUp 0.8s backwards;">Recent Orders</h3>
-                    <div style="background: white; border-radius: 24px; padding: 25px; box-shadow: var(--shadow-soft); animation: fadeInUp 0.8s backwards 0.2s;">
-                        
-                        <div class="cart-item" style="box-shadow: none; border: 1px solid var(--border); margin-bottom: 15px;">
-                            <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=100&q=60" alt="Food">
-                            <div class="item-details">
-                                <h4>Cheesy Deluxe Burger</h4>
-                                <p style="color: var(--text-muted); font-size: 0.85rem;">2 Jan, 2026</p>
-                            </div>
-                            <div style="text-align: right;">
-                                <span class="price" style="display: block;">₹250</span>
-                                <span style="font-size: 0.75rem; color: #16a34a; background: #dcfce7; padding: 4px 10px; border-radius: 50px;">Delivered</span>
-                            </div>
-                        </div>
-
-                         <div class="cart-item" style="box-shadow: none; border: 1px solid var(--border); margin-bottom: 0;">
-                            <img src="https://images.unsplash.com/photo-1604382354936-07c5d9983bd3?auto=format&fit=crop&w=100&q=60" alt="Food">
-                            <div class="item-details">
-                                <h4>Pepperoni Pizza</h4>
-                                <p style="color: var(--text-muted); font-size: 0.85rem;">1 Jan, 2026</p>
-                            </div>
-                            <div style="text-align: right;">
-                                <span class="price" style="display: block;">₹350</span>
-                                <span style="font-size: 0.75rem; color: #16a34a; background: #dcfce7; padding: 4px 10px; border-radius: 50px;">Delivered</span>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
+            <div id="userMenuContainer" style="padding-bottom: 50px;">
+                <p style="text-align: center; color: #888; margin-top: 50px;">Loading Menu...</p>
             </div>
-            
         </main>
     </div>
-    
+
     <script src="script.js"></script>
 
     <script>
-        // Wait for Firebase to check who is logged in
-        firebase.auth().onAuthStateChanged(user => {
-            if(user) {
-                // Fetch User Details from Realtime DB
-                db.ref('users/' + user.uid).once('value').then(snap => {
-                    const data = snap.val();
-                    if(data) {
-                        // Update the HTML Elements with Data
-                        // We use .innerText because these are <h2> and <p> tags, not input boxes
-                        document.getElementById('dispName').innerText = data.username || "Student";
-                        document.getElementById('email').innerText = data.email || user.email;
-                        
-                        if(data.phone) {
-                            document.getElementById('phone').innerText = data.phone;
-                        } else {
-                            document.getElementById('phone').innerText = "+91 (Update Profile)";
-                        }
-                    }
+        // 1. Firebase Config (Already handled in script.js, reusing 'db')
+        // We just need to attach the listener
+        
+        const menuRef = db.ref('menu_items');
+
+        menuRef.on('value', (snapshot) => {
+            const container = document.getElementById('userMenuContainer');
+            container.innerHTML = '';
+            
+            const data = snapshot.val();
+            if(!data) {
+                container.innerHTML = '<p style="text-align:center;">No items found.</p>';
+                return;
+            }
+
+            // --- STEP A: Group Items by Category ---
+            const groupedMenu = {};
+            Object.keys(data).forEach(key => {
+                const item = data[key];
+                const category = item.category.trim(); // Grouping Key
+                
+                if (!groupedMenu[category]) {
+                    groupedMenu[category] = [];
+                }
+                groupedMenu[category].push(item);
+            });
+
+            // --- STEP B: Render Sections ---
+            // Sort categories alphabetically
+            Object.keys(groupedMenu).sort().forEach(category => {
+                const items = groupedMenu[category];
+
+                // 1. Create the Section Header
+                let sectionHTML = `
+                    <section class="category-section">
+                        <div class="category-header">
+                            <h2>${category}</h2>
+                            <span class="category-badge">${items.length}</span>
+                        </div>
+                        <div class="menu-grid">
+                `;
+
+                // 2. Create Cards for this Category
+                items.forEach(item => {
+                    sectionHTML += `
+                    <div class="food-card" data-name="${item.name}" data-price="${item.price}" data-img="${item.image}">
+                        <div class="card-image">
+                            <img src="${item.image}" style="width:100%; height:160px; object-fit:cover; border-radius:15px;" onerror="this.src='https://via.placeholder.com/150'">
+                            <button class="fav-btn" onclick="toggleFav(this)">
+                                <i class="fa-regular fa-heart"></i>
+                            </button>
+                        </div>
+                        <div class="card-details" style="padding:12px;">
+                            <h4 style="margin-bottom:5px;">${item.name}</h4>
+                            <p style="color:gray; font-size:0.85rem; margin-bottom:10px;">${item.category}</p>
+                            
+                            <div class="card-footer">
+                                <span class="price" style="font-weight:bold; color:#FF6B6B;">₹${item.price}</span>
+                                
+                                <div class="qty-control-group">
+                                    <button class="btn-mini" onclick="updateQty(this, -1)">
+                                        <i class="fa-solid fa-minus"></i>
+                                    </button>
+                                    <span class="qty-display">0</span>
+                                    <button class="btn-mini" onclick="updateQty(this, 1)">
+                                        <i class="fa-solid fa-plus"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>`;
                 });
-            } else {
-                // Not logged in? Go back to login
-                window.location.href = "login-signup.html";
+
+                // 3. Close the Grid and Section
+                sectionHTML += `</div></section>`;
+                
+                // 4. Append to Page
+                container.innerHTML += sectionHTML;
+            });
+
+            // --- STEP C: Sync Cart Counts ---
+            // Because we re-generated the HTML, the numbers will be 0.
+            // We call the sync function from script.js to restore cart numbers.
+            if(typeof syncMenuWithCart === "function") {
+                syncMenuWithCart();
             }
         });
-
-        function logout() {
-            firebase.auth().signOut().then(() => {
-                window.location.href = "login-signup.html";
-            });
-        }
     </script>
 </body>
 </html>
