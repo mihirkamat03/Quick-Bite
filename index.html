@@ -117,31 +117,28 @@
                     </div>
                 </div>
             </section>
+            <br><br>
+            <footer style="text-align: center; padding: 20px; color: #888; font-size: 0.8rem;">
+                Made with ❤️ by <strong>Mihir Kamat</strong> for TSEC Canteen
+            </footer>
         </main>
     </div>
+
     <script src="script.js"></script>
     <script>
-        const firebaseConfig = {
-            apiKey: "AIzaSyCtuzk9qJa1zQXskLqVX9OfOmk01wvWtKo",
-            authDomain: "quickbite-d830f.firebaseapp.com",
-            projectId: "quickbite-d830f",
-            storageBucket: "quickbite-d830f.firebasestorage.app",
-            messagingSenderId: "279810717556",
-            appId: "1:279810717556:web:d1fbede1d1c6e58b7f5e21"
-        };
-        if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
-        const auth = firebase.auth();
-
         const authBtn = document.getElementById('authBtn');
+        const add = document.getElementById('btn-primary');
+
+
 
         auth.onAuthStateChanged(user => {
             if (user) {
                 authBtn.innerHTML = '<i class="fa-solid fa-right-from-bracket"></i> <span>Logout</span>';
-                authBtn.href = "#"; 
+                authBtn.href = "#";
                 authBtn.onclick = logoutUser;
             } else {
                 authBtn.innerHTML = '<i class="fa-solid fa-right-to-bracket"></i> <span>Login</span>';
-                authBtn.href = "login-signup.html"; 
+                authBtn.href = "login-signup.html";
                 authBtn.onclick = null;
             }
         });

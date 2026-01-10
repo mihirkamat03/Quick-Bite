@@ -22,31 +22,25 @@ document.addEventListener("DOMContentLoaded", () => {
     // A. Highlight Active Navbar Link
     const currentPath = window.location.pathname.split("/").pop();
     document.querySelectorAll('.nav-link').forEach(link => {
-        if (link.getAttribute('href') === currentPath) {
+        // Handle "Home" link active state specifically
+        if (link.getAttribute('href') === currentPath || (currentPath === '' && link.getAttribute('href') === 'index.html')) {
             link.classList.add('active');
         }
     });
 
-    // B. SYNC MENU QUANTITIES (The Fix for your issue)
-    // This checks if we are on the menu page and updates buttons to match the cart
+    // B. SYNC MENU QUANTITIES
     if (document.querySelector('.food-card')) {
         syncMenuWithCart();
     }
 });
 
 
-// --- 3. SYNC LOGIC (New Function) ---
+// --- 3. SYNC LOGIC ---
 function syncMenuWithCart() {
     const cart = JSON.parse(localStorage.getItem('quickbite_cart')) || { items: [] };
-    
-    // Loop through every card on the screen
     document.querySelectorAll('.food-card').forEach(card => {
         const name = card.getAttribute('data-name');
-        
-        // Check if this item is in the cart
         const itemInCart = cart.items.find(item => item.name === name);
-        
-        // Update the number display
         const qtyDisplay = card.querySelector('.qty-display');
         if (qtyDisplay) {
             qtyDisplay.innerText = itemInCart ? itemInCart.quantity : 0;
@@ -56,7 +50,6 @@ function syncMenuWithCart() {
 
 
 // --- 4. BUTTON INTERACTION LOGIC ---
-
 function toggleFav(btn) {
     btn.classList.toggle('active');
     const icon = btn.querySelector('i');
@@ -73,20 +66,17 @@ function updateQty(btn, change) {
     const container = btn.parentElement;
     const display = container.querySelector('.qty-display');
     const card = btn.closest('.food-card');
-    
-    // Get Data
+
     const name = card.getAttribute('data-name');
     const price = parseInt(card.getAttribute('data-price'));
     const img = card.getAttribute('data-img');
-    
+
     let currentQty = parseInt(display.innerText);
     let newQty = currentQty + change;
     if (newQty < 0) newQty = 0;
 
-    // Update UI immediately
     display.innerText = newQty;
 
-    // Update Storage
     if (change > 0) {
         addToCart(name, price, img);
     } else if (change < 0) {
@@ -95,9 +85,7 @@ function updateQty(btn, change) {
 }
 
 
-// --- 5. CART DATA LOGIC ---
-
-function addToCart(name, price, image, type = 'Veg') {
+// Using LocalStorage here so students don't lose their cart if they accidentally refresh the page on bad college Wi-Fi.function addToCart(name, price, image, type = 'Veg')
     let cart = JSON.parse(localStorage.getItem('quickbite_cart')) || { items: [], total: 0 };
     const existingItem = cart.items.find(item => item.name === name);
 
@@ -106,7 +94,6 @@ function addToCart(name, price, image, type = 'Veg') {
     } else {
         cart.items.push({ name, price, image, type, quantity: 1 });
     }
-
     saveCart(cart);
 }
 
@@ -116,8 +103,6 @@ function removeFromCart(name) {
 
     if (existingItem) {
         existingItem.quantity -= 1;
-        
-        // Remove item if 0
         if (existingItem.quantity <= 0) {
             cart.items = cart.items.filter(item => item.name !== name);
         }
@@ -126,11 +111,8 @@ function removeFromCart(name) {
 }
 
 function saveCart(cart) {
-    // Recalculate Total
     cart.total = cart.items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-    
     localStorage.setItem('quickbite_cart', JSON.stringify(cart));
-    console.log("Cart Updated:", cart);
 }
 
 
@@ -174,4 +156,73 @@ function showNotification(type, title, message, redirectUrl = null) {
         btn.onclick = () => overlay.classList.remove('active');
     }
     overlay.classList.add('active');
+}
+
+
+// --- 7. AUTH & PAGE SPECIFIC LOGIC ---
+if (auth) {
+    auth.onAuthStateChanged(user => {
+        // A. If logged in
+        if (user) {
+            // Check if we are on the PROFILE page before running profile code
+            if (document.getElementById('userName')) {
+                loadProfileData(user);
+            }
+        } 
+        // B. If NOT logged in
+        else {
+            const path = window.location.pathname;
+            // Only redirect if NOT on login, signup, or campus code pages
+            if (!path.includes('login-signup.html') && !path.includes('campus-code.html')) {
+                window.location.href = 'login-signup.html';
+            }
+        }
+    });
+}
+
+// Helper function to load profile data (Moved out to be cleaner)
+function loadProfileData(user) {
+    db.ref('users/' + user.uid).on('value', snapshot => {
+        const data = snapshot.val();
+        if (data) {
+            if(document.getElementById('userName')) document.getElementById('userName').innerText = data.username || "Student";
+            if(document.getElementById('userEmail')) document.getElementById('userEmail').innerText = user.email;
+            if(document.getElementById('walletBalance')) document.getElementById('walletBalance').innerText = "₹" + (data.wallet || 0);
+            if(document.getElementById('avatarInitial')) document.getElementById('avatarInitial').innerText = (data.username || "U")[0].toUpperCase();
+        }
+    });
+
+    db.ref('orders').orderByChild('userId').equalTo(user.uid).on('value', snapshot => {
+        const list = document.getElementById('historyList');
+        if (!list) return; // Exit if history list doesn't exist (e.g. on Home page)
+        
+        list.innerHTML = '';
+        const data = snapshot.val();
+        if (data) {
+            const orders = Object.values(data).reverse();
+            if(document.getElementById('totalOrders')) document.getElementById('totalOrders').innerText = orders.length;
+
+            orders.forEach(order => {
+                const date = new Date(order.timestamp).toLocaleDateString();
+                const itemNames = order.items.map(i => i.name).join(", ");
+                list.innerHTML += `
+                    <div class="history-card">
+                        <div>
+                            <h4 style="margin-bottom:5px;">#${order.queueNumber || '00'} - ₹${order.total}</h4>
+                            <p style="color:gray; font-size:0.85rem; width:200px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">
+                                ${itemNames}
+                            </p>
+                            <small style="color:#ccc;">${date}</small>
+                        </div>
+                        <span class="order-badge badge-${order.status}">${order.status}</span>
+                    </div>`;
+            });
+        } else {
+            list.innerHTML = '<p style="color:gray; text-align:center;">No past orders.</p>';
+        }
+    });
+}
+
+function logout() {
+    firebase.auth().signOut().then(() => window.location.href = 'login-signup.html');
 }

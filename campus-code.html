@@ -8,17 +8,35 @@
     <link href='https://fonts.googleapis.com/css?family=Poppins:wght@300;400;500;600;700&display=swap' rel='stylesheet'>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
+    
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
+
+    <style>
+        .hidden { display: none !important; }
+        .animate-up { animation: fadeInUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) backwards; }
+        .success-check {
+            width: 80px; height: 80px;
+            animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        @keyframes popIn {
+            0% { transform: scale(0); opacity: 0; }
+            80% { transform: scale(1.1); opacity: 1; }
+            100% { transform: scale(1); }
+        }
+    </style>
 </head>
 <body class="campus-page-body">
 
     <div id="loadingOverlay" class="modal-overlay">
-        <div class="modal-content verify-modal">
-            <div class="loader-container">
-                <div class="custom-spinner"></div>
-                <img id="successIcon" class="success-check hidden" src="https://img.icons8.com/?size=100&id=zSZ4mlKW8DSR&format=png&color=000000" alt="Success">
+        <div class="modal-content verify-modal" style="text-align:center;">
+            <div class="loader-container" style="height: 100px; display: flex; align-items: center; justify-content: center; margin-bottom: 10px;">
+                <div id="spinner" class="custom-spinner"></div>
+                <img id="successIcon" class="success-check hidden" src="https://img.icons8.com/?size=100&id=zSZ4mlKW8DSR&format=png&color=10b981" alt="Success">
             </div>
-            <h3 id="statusTitle">Verifying Code</h3>
-            <p id="statusDesc">Connecting to campus server...</p>
+            <h3 id="statusTitle" style="font-size: 1.5rem; margin-bottom: 5px;">Verifying Code</h3>
+            <p id="statusDesc" style="color: #666;">Connecting to campus server...</p>
         </div>
     </div>
 
@@ -36,27 +54,93 @@
 
         <div class="campus-form-section">
             <div class="form-card animate-up">
-                <div class="header">
-                    <h2>Campus Entry</h2>
-                    <p>Enter your unique campus code to access the menu</p>
+                <div class="header" style="margin-bottom: 30px;">
+                    <h2>Campus Entry 🎓</h2>
+                    <p style="color: #64748b;">Enter your unique campus code to access the menu</p>
                 </div>
 
                 <div class="input-field-group">
                     <i class="fa-solid fa-building-columns"></i>
-                    <input type="text" id="codeInput" placeholder="e.g. TSEC-2026" maxlength="15">
+                    <input type="text" id="codeInput" placeholder="e.g. TSEC-2026" maxlength="15" autocomplete="off">
                 </div>
 
-                <button class="btn-primary full-width" onclick="checkCode()">
-                    Verify & Continue <i class="fa-solid fa-arrow-right"></i>
+                <button class="btn-primary full-width" onclick="checkCode()" style="height: 55px; font-size: 1.1rem; justify-content: center;">
+                    Verify & Continue <i class="fa-solid fa-arrow-right" style="margin-left: 8px;"></i>
                 </button>
 
                 <div class="support-link">
-                    <p>Don't have a code? <a href="contact.html">Contact Support</a></p>
+                    <p style="font-size: 0.8rem; opacity: 0.7;">Recruiter Test Case: <strong>admin123</strong></p>
                 </div>
             </div>
         </div>
     </div>
 
     <script src="script.js"></script>
+
+    <script>
+        function checkCode() {
+            const input = document.getElementById('codeInput');
+            const code = input.value.trim().toUpperCase();
+
+            if (code.length < 3) {
+                alert("Please enter a valid Campus Code!");
+                return;
+            }
+
+            // 1. Show Loading
+            const overlay = document.getElementById('loadingOverlay');
+            document.getElementById('statusTitle').innerText = "Verifying Code";
+            document.getElementById('statusTitle').style.color = "#333";
+            document.getElementById('statusDesc').innerText = "Connecting to campus server...";
+            document.getElementById('spinner').classList.remove('hidden');
+            document.getElementById('successIcon').classList.add('hidden');
+            overlay.style.display = 'flex';
+
+            setTimeout(() => {
+                
+                // A. RECRUITER BYPASS (Test Case)
+                if (code === "ADMIN123") {
+                    showSuccess("ADMIN123");
+                    return;
+                }
+
+                // B. REAL DATABASE CHECK
+                db.ref('campus_codes/' + code).once('value')
+                .then(snapshot => {
+                    if (snapshot.exists()) {
+                        showSuccess(code);
+                    } else {
+                        showError();
+                    }
+                })
+                .catch(err => {
+                    console.error(err);
+                    alert("Connection Error. Please try again.");
+                    overlay.style.display = 'none';
+                });
+
+            }, 1000);
+        }
+
+        function showSuccess(code) {
+            document.getElementById('spinner').classList.add('hidden');
+            document.getElementById('successIcon').classList.remove('hidden');
+            
+            document.getElementById('statusTitle').innerText = "Access Granted!";
+            document.getElementById('statusTitle').style.color = "#10b981";
+            document.getElementById('statusDesc').innerText = "Welcome to " + code;
+
+            setTimeout(() => {
+                localStorage.setItem('quickbite_campus_code', code);
+                window.location.href = 'login-signup.html';
+            }, 1200);
+        }
+
+        function showError() {
+            const overlay = document.getElementById('loadingOverlay');
+            overlay.style.display = 'none';
+            alert("Invalid Campus Code! Please contact your admin.");
+        }
+    </script>
 </body>
 </html>

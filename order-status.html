@@ -208,14 +208,12 @@
     </div>
 
     <script src="script.js"></script>
-    
-    <script>
-        // --- 1. SETUP SOUNDS ---
-        // Make sure these files exist in your 'src' folder!
-        const soundReady = new Audio('src/ready.mp3');
 
-        // Variable to track the previous status so we don't play sound on every refresh
-        let lastStatus = ""; 
+    <script>
+
+        const soundReady = new Audio('src/ready.wav');
+        
+        let lastStatus = "";
 
         // --- 2. AUTH CHECK ---
         if (auth) {
@@ -234,7 +232,7 @@
 
             ordersRef.on('value', snapshot => {
                 const data = snapshot.val();
-                
+
                 if (!data) {
                     showEmptyState();
                     return;
@@ -243,15 +241,15 @@
                 const orderId = Object.keys(data)[0];
                 const order = data[orderId];
 
-                if(order.status === 'Delivered' || order.status === 'Cancelled') {
-                     showEmptyState();
-                     return;
+                if (order.status === 'Delivered' || order.status === 'Cancelled') {
+                    showEmptyState();
+                    return;
                 }
 
                 // --- SOUND LOGIC START ---
                 // We check if the status has CHANGED from what we last saw
                 if (order.status !== lastStatus) {
-                    
+
                     // If moving to Ready -> Play Ding Sound
                     if (order.status === 'Ready') {
                         soundReady.play().catch(e => console.log("Audio blocked:", e));
@@ -266,7 +264,7 @@
                 document.getElementById('noOrderState').style.display = 'none';
                 document.getElementById('trackerContainer').style.display = 'block';
                 document.getElementById('trackerContainer').className = `status-container state-${order.status}`;
-                
+
                 document.getElementById('queueNum').innerText = "#" + (order.queueNumber || '00');
                 document.getElementById('totalPrice').innerText = "₹" + order.total;
 
@@ -303,13 +301,13 @@
                 steps[0].classList.add('active');
                 title.innerText = "Order Sent to Kitchen";
                 icon.className = "fa-solid fa-hourglass-start";
-            } 
+            }
             else if (status === 'Preparing') {
                 steps[0].classList.add('active');
                 steps[1].classList.add('active');
                 title.innerText = "Chef is Cooking...";
                 icon.className = "fa-solid fa-fire-burner";
-            } 
+            }
             else if (status === 'Ready') {
                 steps[0].classList.add('active');
                 steps[1].classList.add('active');
