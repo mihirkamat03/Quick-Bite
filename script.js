@@ -85,7 +85,8 @@ function updateQty(btn, change) {
 }
 
 
-// Using LocalStorage here so students don't lose their cart if they accidentally refresh the page on bad college Wi-Fi.function addToCart(name, price, image, type = 'Veg')
+// --- 5. CART DATA LOGIC ---
+function addToCart(name, price, image, type = 'Veg') {
     let cart = JSON.parse(localStorage.getItem('quickbite_cart')) || { items: [], total: 0 };
     const existingItem = cart.items.find(item => item.name === name);
 

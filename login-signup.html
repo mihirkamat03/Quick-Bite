@@ -82,10 +82,23 @@
         </div>
     </div>
 
-    <script src="script.js"></script>
-
     <script>
-        // 2. DOM Elements
+        // 1. Paste your Firebase Configuration here
+        const firebaseConfig = {
+            apiKey: "AIzaSyCtuzk9qJa1zQXskLqVX9OfOmk01wvWtKo",
+            authDomain: "quickbite-d830f.firebaseapp.com",
+            projectId: "quickbite-d830f",
+            storageBucket: "quickbite-d830f.firebasestorage.app",
+            messagingSenderId: "279810717556",
+            appId: "1:279810717556:web:d1fbede1d1c6e58b7f5e21"
+        };
+
+        // 2. Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.database();
+
+        // --- DOM Elements ---
         const loginForm = document.querySelector('#loginForm form');
         const signupForm = document.querySelector('#signupForm form');
 
@@ -93,34 +106,39 @@
         document.querySelector('#signupForm .btn-auth').addEventListener('click', (e) => {
             e.preventDefault();
 
-            // 1. GET INPUTS
+            // --- MISSING CODE ADDED HERE ---
             const inputs = document.querySelectorAll('#signupForm input');
             const name = inputs[0].value;
             const email = inputs[1].value;
             const password = inputs[2].value;
+            // -------------------------------
 
             if (!email || !password) {
                 alert("Please fill in all fields");
                 return;
             }
 
-            // auth and db variables come from script.js now!
             auth.createUserWithEmailAndPassword(email, password)
                 .then((userCredential) => {
                     const user = userCredential.user;
+
+                    // 1. GET THE CODE YOU SAVED IN STEP 1
                     const campusCode = localStorage.getItem('quickbite_campus_code') || "Default";
 
+                    // 2. SAVE EVERYTHING TO DB
                     return db.ref('users/' + user.uid).set({
                         username: name,
                         email: email,
                         uid: user.uid,
                         phone: "",
                         wallet: 0,
-                        campus: campusCode
+                        campus: campusCode // <--- Attached here!
                     });
                 })
                 .then(() => {
                     alert("Account Created Successfully!");
+
+                    // 3. GO TO HOME PAGE (Not back to login or code)
                     window.location.href = "index.html";
                 })
                 .catch((error) => alert(error.message));
@@ -137,10 +155,10 @@
                 .then(() => {
                     window.location.href = "index.html";
                 })
-                .catch((error) => alert("Login Failed: " + error.message));
+                .catch((error) => alert("Email/ Password seems to be wrong, please re-check it"));
         });
 
-        // --- Animation Logic ---
+        // --- Animation Logic (Keep this from your previous file) ---
         function switchForm(target) {
             const loginBtn = document.getElementById('loginForm');
             const signupBtn = document.getElementById('signupForm');
@@ -154,6 +172,8 @@
             }
         }
     </script>
+
+    <script src="script.js"></script>
 </body>
 
 </html>

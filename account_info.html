@@ -112,9 +112,72 @@
     <script src="script.js"></script>
 
     <script>
-        // Data loading is now handled by script.js because 
-        // it detects 'userName' on this page!
-        
+        firebase.auth().onAuthStateChanged(user => {
+            if (user) {
+                // 1. Fetch User Profile & Wallet
+                db.ref('users/' + user.uid).on('value', snap => {
+                    const data = snap.val();
+                    if (data) {
+                        document.getElementById('dispName').innerText = data.username || "Student";
+                        document.getElementById('email').innerText = data.email || user.email;
+                        document.getElementById('phone').innerText = data.phone || "+91 (Update Profile)";
+                        document.getElementById('statWallet').innerText = "₹" + (data.wallet || 0);
+                    }
+                });
+
+                // 2. Fetch Order History
+                db.ref('orders').orderByChild('userId').equalTo(user.uid).on('value', snapshot => {
+                    const container = document.getElementById('ordersContainer');
+                    const data = snapshot.val();
+                    
+                    container.innerHTML = ''; // Clear loading text
+
+                    if (data) {
+                        const orders = Object.values(data).reverse(); // Newest first
+                        
+                        // Update "Orders" Stat
+                        document.getElementById('statTotalOrders').innerText = orders.length;
+
+                        orders.forEach(order => {
+                            const date = new Date(order.timestamp).toLocaleDateString();
+                            // If order has multiple items, show first item + count
+                            const firstItem = order.items[0];
+                            const moreCount = order.items.length - 1;
+                            const title = moreCount > 0 ? `${firstItem.name} + ${moreCount} more` : firstItem.name;
+                            const image = firstItem.image || 'https://via.placeholder.com/100';
+
+                            // Color for Status
+                            let statusColor = '#f3f4f6'; // Default grey
+                            let statusText = '#4b5563';
+                            if(order.status === 'Delivered') { statusColor = '#dcfce7'; statusText = '#16a34a'; }
+                            if(order.status === 'Pending') { statusColor = '#fffbeb'; statusText = '#d97706'; }
+
+                            // Generate HTML matching your Exact Design
+                            const cardHTML = `
+                            <div class="cart-item" style="box-shadow: none; border: 1px solid var(--border); margin-bottom: 15px;">
+                                <img src="${image}" alt="Food" style="width: 60px; height: 60px; object-fit: cover; border-radius: 12px;">
+                                <div class="item-details" style="flex:1; margin-left: 15px;">
+                                    <h4 style="margin:0 0 5px 0; font-size:1rem;">${title}</h4>
+                                    <p style="color: var(--text-muted); font-size: 0.85rem;">${date}</p>
+                                </div>
+                                <div style="text-align: right;">
+                                    <span class="price" style="display: block; font-weight:bold; font-size:1.1rem;">₹${order.total}</span>
+                                    <span style="font-size: 0.75rem; color: ${statusText}; background: ${statusColor}; padding: 4px 10px; border-radius: 50px; font-weight:600;">${order.status}</span>
+                                </div>
+                            </div>`;
+                            
+                            container.innerHTML += cardHTML;
+                        });
+                    } else {
+                        container.innerHTML = '<p style="text-align:center; color:#999; padding:20px;">No past orders found.</p>';
+                    }
+                });
+
+            } else {
+                window.location.href = "login-signup.html";
+            }
+        });
+
         function logout() {
             firebase.auth().signOut().then(() => {
                 window.location.href = "login-signup.html";
