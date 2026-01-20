@@ -42,7 +42,6 @@
             font-weight: 600;
         }
 
-        /* Responsive Grid for Cards */
         .menu-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -87,10 +86,7 @@
 
     <script src="script.js"></script>
 
-    <script>
-        // 1. Firebase Config (Already handled in script.js, reusing 'db')
-        // We just need to attach the listener
-        
+    <script>    
         const menuRef = db.ref('menu_items');
 
         menuRef.on('value', (snapshot) => {
@@ -103,7 +99,6 @@
                 return;
             }
 
-            // --- STEP A: Group Items by Category ---
             const groupedMenu = {};
             Object.keys(data).forEach(key => {
                 const item = data[key];
@@ -115,12 +110,9 @@
                 groupedMenu[category].push(item);
             });
 
-            // --- STEP B: Render Sections ---
-            // Sort categories alphabetically
             Object.keys(groupedMenu).sort().forEach(category => {
                 const items = groupedMenu[category];
 
-                // 1. Create the Section Header
                 let sectionHTML = `
                     <section class="category-section">
                         <div class="category-header">
@@ -130,7 +122,6 @@
                         <div class="menu-grid">
                 `;
 
-                // 2. Create Cards for this Category
                 items.forEach(item => {
                     sectionHTML += `
                     <div class="food-card" data-name="${item.name}" data-price="${item.price}" data-img="${item.image}">
@@ -161,20 +152,16 @@
                     </div>`;
                 });
 
-                // 3. Close the Grid and Section
                 sectionHTML += `</div></section>`;
                 
-                // 4. Append to Page
                 container.innerHTML += sectionHTML;
             });
 
-            // --- STEP C: Sync Cart Counts ---
-            // Because we re-generated the HTML, the numbers will be 0.
-            // We call the sync function from script.js to restore cart numbers.
             if(typeof syncMenuWithCart === "function") {
                 syncMenuWithCart();
             }
         });
     </script>
 </body>
+
 </html>
