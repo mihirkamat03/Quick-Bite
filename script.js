@@ -1,4 +1,3 @@
-// --- 1. FIREBASE CONFIGURATION ---
 const firebaseConfig = {
     apiKey: "AIzaSyCtuzk9qJa1zQXskLqVX9OfOmk01wvWtKo",
     authDomain: "quickbite-d830f.firebaseapp.com",
@@ -17,25 +16,20 @@ const auth = typeof firebase !== 'undefined' ? firebase.auth() : null;
 const db = typeof firebase !== 'undefined' ? firebase.database() : null;
 
 
-// --- 2. GLOBAL UI LOGIC ---
 document.addEventListener("DOMContentLoaded", () => {
-    // A. Highlight Active Navbar Link
     const currentPath = window.location.pathname.split("/").pop();
     document.querySelectorAll('.nav-link').forEach(link => {
-        // Handle "Home" link active state specifically
         if (link.getAttribute('href') === currentPath || (currentPath === '' && link.getAttribute('href') === 'index.html')) {
             link.classList.add('active');
         }
     });
 
-    // B. SYNC MENU QUANTITIES
     if (document.querySelector('.food-card')) {
         syncMenuWithCart();
     }
 });
 
 
-// --- 3. SYNC LOGIC ---
 function syncMenuWithCart() {
     const cart = JSON.parse(localStorage.getItem('quickbite_cart')) || { items: [] };
     document.querySelectorAll('.food-card').forEach(card => {
@@ -49,7 +43,6 @@ function syncMenuWithCart() {
 }
 
 
-// --- 4. BUTTON INTERACTION LOGIC ---
 function toggleFav(btn) {
     btn.classList.toggle('active');
     const icon = btn.querySelector('i');
@@ -85,7 +78,6 @@ function updateQty(btn, change) {
 }
 
 
-// --- 5. CART DATA LOGIC ---
 function addToCart(name, price, image, type = 'Veg') {
     let cart = JSON.parse(localStorage.getItem('quickbite_cart')) || { items: [], total: 0 };
     const existingItem = cart.items.find(item => item.name === name);
@@ -117,7 +109,6 @@ function saveCart(cart) {
 }
 
 
-// --- 6. NOTIFICATION SYSTEM ---
 function showNotification(type, title, message, redirectUrl = null) {
     if (!document.getElementById('customDialog')) {
         const dialogHTML = `
@@ -160,20 +151,15 @@ function showNotification(type, title, message, redirectUrl = null) {
 }
 
 
-// --- 7. AUTH & PAGE SPECIFIC LOGIC ---
 if (auth) {
     auth.onAuthStateChanged(user => {
-        // A. If logged in
         if (user) {
-            // Check if we are on the PROFILE page before running profile code
             if (document.getElementById('userName')) {
                 loadProfileData(user);
             }
         } 
-        // B. If NOT logged in
         else {
             const path = window.location.pathname;
-            // Only redirect if NOT on login, signup, or campus code pages
             if (!path.includes('login-signup.html') && !path.includes('campus-code.html')) {
                 window.location.href = 'login-signup.html';
             }
@@ -181,7 +167,6 @@ if (auth) {
     });
 }
 
-// Helper function to load profile data (Moved out to be cleaner)
 function loadProfileData(user) {
     db.ref('users/' + user.uid).on('value', snapshot => {
         const data = snapshot.val();
@@ -195,7 +180,7 @@ function loadProfileData(user) {
 
     db.ref('orders').orderByChild('userId').equalTo(user.uid).on('value', snapshot => {
         const list = document.getElementById('historyList');
-        if (!list) return; // Exit if history list doesn't exist (e.g. on Home page)
+        if (!list) return;
         
         list.innerHTML = '';
         const data = snapshot.val();
@@ -226,4 +211,5 @@ function loadProfileData(user) {
 
 function logout() {
     firebase.auth().signOut().then(() => window.location.href = 'login-signup.html');
+
 }
